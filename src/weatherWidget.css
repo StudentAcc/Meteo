@@ -1,0 +1,48 @@
+.container {
+	position: relative;
+	width: 50%;
+	background-color:rgba(113,140,153,.85);
+	border-radius: 5px;
+  }
+  
+.container:after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+
+.widget {
+	position: absolute;
+	width: 100%;
+  	height: 100%;
+}
+
+.data {
+	text-align: center;
+}
+
+p { 
+	color: #ffffff
+}
+
+.pvalue {
+	position: relative;
+	margin-top: 40%;
+	font-size: 40px;
+}
+
+.Temperature {
+	font-size: 20px;
+	position: relative;
+	margin-top: 24%;
+}
+
+.Wind {
+	font-size: 20px;
+	position: relative;
+	margin-top: 24%;
+}
+
+.Precipitation {
+	font-size: 20px;
+}
