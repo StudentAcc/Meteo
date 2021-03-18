@@ -4,8 +4,11 @@ class SearchBar extends React.Component {
 	render() {
 		return (
 			<div style={styles.div}>
-				<input style={styles.input} type="text" placeholder="Search Location"
-				       onChange={this.props.change}></input>
+				<form onSubmit={(e) => {this.props.handleSubmit(e);}}>
+					<input style={styles.input} type="text" placeholder="Search Location"
+					 	   onChange={(e) => {this.props.handleInput(e);}}>	
+					</input>
+				</form>
 			</div>
 		)
 	}

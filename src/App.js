@@ -1,106 +1,84 @@
 import './App.css';
 import React from 'react';
-import NavBar from './navBar';
-import WeatherWidget from './weatherWidget';
-import weatherBackground from './weatherDescriptions';
-import Header from './header';
+import WeatherWidgetMain from "./weatherWidgetMain";
+import Homepage from "./Homepage";
+import Geocode from "react-geocode";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mounted: false,
       latitude: null,
-      longitutde: null,
+      longitude: null,
       location: null,
-      temperature: null,
-      precipitation: null, 
-      windSpeed: null,
-      windDegrees: null,
-      weatherDescription: null,
-      period: 'Today'
-    };
+      current: null,
+      daily: null,
+      hourly: null,
+      hasFetched: false
+    }
+    Geocode.setLocationType("ROOFTOP");
+		Geocode.setApiKey("AIzaSyAZOPHHp7iiz1Y9dAcsLxU86qSKvWEsWFk");
   }
   fetchWeatherData() {
-    let component = this;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-        const key = "3a272e399eccb14fac2be5eeca1b5d00";
-        const weatherURL = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}&units=metric`
-        fetch(weatherURL).then(res => res.json())
-        .then((data) => {
-          console.log(data);
-          component.setState({
-            mounted: true,
+		if (navigator.geolocation) {
+		  navigator.geolocation.getCurrentPosition((position) => {
+			const lat = position.coords.latitude;
+			const lon = position.coords.longitude;
+			const key = "3a272e399eccb14fac2be5eeca1b5d00";
+			const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${key}&units=metric`
+			fetch(forecast).then(res => res.json())
+			.then((data) => {
+			  console.log(data);
+			  Geocode.fromLatLng(lat, lon).then((res) => {
+          const loc = res.results[0].address_components[2].long_name;
+          this.setState({
             latitude: lat,
             longitude: lon,
-            location: data.name,
-            temperature: data.main.temp,
-            precipitation: '10',
-            windSpeed: data.wind.speed,
-            windDegrees: data.wind.deg,
-            weatherDescription: data.weather[0].description
-          });
-          if (Object.prototype.hasOwnProperty(data, "rain"))
-            component.setState({precipitation: data.rain});
-        });
-      });
-    }
-  }
+            location: loc,
+            current: data.current,
+            daily: data.daily,
+            hourly: data.hourly,
+            hasFetched: true});
+			  }, (err) => {
+				console.log(err);
+			  });
+			}, (err) => {
+			  console.log(err); 
+			});
+		  });
+		}
+	}
   componentDidMount() {
     this.fetchWeatherData();
   }
-  componentDidUpdate() {
-    document.body.style.backgroundImage = weatherBackground[this.state.weatherDescription].backgroundImage;
-  }
   render() {
+    const { hasFetched } = this.state;
+    if (!hasFetched) {
+      return <h1> Please wait </h1>
+    }
     return (
-          <main>
-          <NavBar currentLocation="London"> </NavBar>
-          <Header currentLocation="London"></Header>
-          <div style={styles.widgetsContainer}>
-            <WeatherWidget style={styles.widgetTemp} name="Temperature" value={this.state.temperature+"°c"}/>
-            <WeatherWidget style={styles.widgetPrec} name="Precipitation" value={this.state.precipitation}/>
-            <WeatherWidget style={styles.widgetWind} name="Wind" value={this.state.windSpeed+" km/h"}/>
-          </div>
-          </main>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Homepage {...this.state}/>
+              </Route>
+            <Route exact path="/temperature">
+              <WeatherWidgetMain {...this.state} category="Temperature"/>
+            </Route>
+            <Route exact path="/precipitation">
+              <WeatherWidgetMain {...this.state} category="Precipitation"/>
+            </Route>
+            <Route exact path="/wind">
+              <WeatherWidgetMain {...this.state} category="Wind"/>
+            </Route>
+            {/* <Route exact path="/satellite" component={Satellite}/>
+            <Route exact path="/world" component={World}/> */}
+            <Redirect from="*" to="/"/>
+            </Switch>
+        </Router>
     )
   }
 }
-
-let styles = {
-	widgetsContainer: {
-    position: 'absolute',
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3,1fr)',
-    gridColumnGap: '20px',
-    top: '25%',
-    left: '4%',
-    width: '90%',
-	},
-  widgetTemp: {
-    container: {
-      width: '100%',
-      height: '100%',
-      gridColumn: '1'
-   }
-  },
-  widgetPrec: {
-    container: {
-      width: '100%',
-      height: '100%',
-      gridColumn: '2'
-    }
-  },
-  widgetWind: {
-    container: {
-      width: '100%',
-      height: '100%',
-      gridColumn: '3'
-    }
-  }
-};
 
 export default App;

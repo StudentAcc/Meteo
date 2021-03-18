@@ -1,26 +1,20 @@
 const weatherBackground = {
-	"few clouds": {
+	"Clear": {
+		backgroundImage: 'linear-gradient(to bottom, #d4d8e1, #b4c3e7, #95aceb, #7696ef, #577ff0)'
+	},
+	"Clouds": {
 	   backgroundImage: 'linear-gradient(to bottom, #d4d8e1, #b4c3e7, #95aceb, #7696ef, #577ff0)'
 	}, 
-	 "scattered clouds" : {
+	 "Drizzle" : {
 	   backgroundImage: 'linear-gradient(to bottom, #9fbac5, #92afba, #86a3af, #7998a4, #6d8d99)'
 	 },
-	 "broken clouds": {
+	 "Rain": {
 		backgroundImage: 'linear-gradient(to bottom, #9fbac5, #92afba, #86a3af, #7998a4, #6d8d99)'
 	 },
-	 "shower rain": {
+	 "Snow": {
 		backgroundImage: 'linear-gradient(to bottom, #9fbac5, #92afba, #86a3af, #7998a4, #6d8d99)'
 	 },
-	 "rain": {
-		backgroundImage: 'linear-gradient(to bottom, #9fbac5, #92afba, #86a3af, #7998a4, #6d8d99)'
-	 },
-	 "thunderstorm": {
-		backgroundImage: 'linear-gradient(to bottom, #9fbac5, #92afba, #86a3af, #7998a4, #6d8d99)'
-	 },
-	 "snow": {
-		backgroundImage: 'linear-gradient(to bottom, #9fbac5, #92afba, #86a3af, #7998a4, #6d8d99)'
-	 },
-	 "mist": {
+	 "Thunderstorm": {
 		backgroundImage: 'linear-gradient(to bottom, #9fbac5, #92afba, #86a3af, #7998a4, #6d8d99)'
 	 }
 };

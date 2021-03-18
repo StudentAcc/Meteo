@@ -1,0 +1,15 @@
+.headerBorder {
+	display: flex;
+	align-items: center;
+	margin: 5%;
+	left: 50%;
+	height: 8em;
+	border-top: 3px solid #ffffff;
+    border-bottom: 3px solid #ffffff;
+}
+
+.headerInfo {
+
+}
+
+

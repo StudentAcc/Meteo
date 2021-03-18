@@ -34,7 +34,7 @@ class NavBar extends React.Component {
 					<Route path="/satellite" component={Satellite}/>
 					<Route path="/world" component={World}/>
 				</Switch> */}
-				<SearchBar/>
+				<SearchBar handleInput={this.props.handleInput} handleSubmit={this.props.handleSubmit}/>
 		</nav>
 		</Router>
 		)
