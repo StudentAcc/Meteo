@@ -3,6 +3,7 @@ import React from 'react';
 import WeatherWidgetMain from "./weatherWidgetMain";
 import Homepage from "./Homepage";
 import Geocode from "react-geocode";
+import MapWidget from "./MapWidget";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 class App extends React.Component {
@@ -72,8 +73,9 @@ class App extends React.Component {
             <Route exact path="/wind">
               <WeatherWidgetMain {...this.state} category="Wind"/>
             </Route>
-            {/* <Route exact path="/satellite" component={Satellite}/>
-            <Route exact path="/world" component={World}/> */}
+            <Route exact path="/map">
+            <MapWidget lat={this.state.latitude} lng={this.state.longitude}/>
+            </Route>
             <Redirect from="*" to="/"/>
             </Switch>
         </Router>

@@ -4,7 +4,6 @@ import SearchBar from "./searchBar";
 import { BrowserRouter as Router, /*Route, Switch*/ } from "react-router-dom";
 import { faHome, faSatelliteDish, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-// import App from './App'
 
 class NavBar extends React.Component {
 	render() {
@@ -14,17 +13,12 @@ class NavBar extends React.Component {
 				<p style={styles.appName}> Meteo </p>
 				<ul style={styles.ul}>
 					<li style={styles.li}>
-						<Link style={styles.link} to={this.props.currentLocation}> 
+						<Link style={styles.link} to="/"> 
 							<FontAwesomeIcon style={styles.fa} icon={faHome}/> 
 						</Link>
 					</li>
 					<li style={styles.li}>
-						<Link style={styles.link} to="/satellite"> 
-							<FontAwesomeIcon style={styles.fa}  icon={faSatelliteDish}/> 
-						</Link>
-					</li>
-					<li style={styles.li}>
-						<Link style={styles.link} to="/satellite"> 
+						<Link style={styles.link} to="/map"> 
 							<FontAwesomeIcon style={styles.fa}  icon={faGlobeEurope}/> 
 						</Link>
 					</li>
