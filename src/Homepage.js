@@ -5,6 +5,7 @@ import weatherBackground from './weatherDescriptions';
 import Header from './header';
 import Geocode from "react-geocode";
 import { Link } from "react-router-dom";
+import "./Homepage.css";
 
 class Homepage extends React.Component {
 	constructor(props) {
@@ -17,6 +18,8 @@ class Homepage extends React.Component {
 			windDegrees: this.props.current.wind_deg,
 			weatherDescription: this.props.current.weather[0].main,
 			date: (new Date(this.props.current.dt * 1000)).toLocaleDateString("en-GB"),
+			current: this.props.current,
+			hourly: this.props.hourly,
 			daily: this.props.daily,
 			hasMounted: false
 		};
@@ -35,7 +38,7 @@ class Homepage extends React.Component {
 		  .then((data) => {
 			console.log(data);
 			this.setLocationWeatherData(location, data.current, data.hourly[0].pop);
-			this.setState({daily: data.daily});
+			this.setState({current: data.current, hourly: data.hourly, daily: data.daily});
 		  }, (err) => {
 			console.log(err); 
 		  });
@@ -47,12 +50,12 @@ class Homepage extends React.Component {
 		e.preventDefault();
 		if (e.target.id === 'Today') {
 			this.setState({
-				temperature: this.state.temperature,
-				precipitation: Math.round(this.state.precipitation * 100),
-				windSpeed: Math.round(this.state.windSpeed * 3.6),
-				windDegrees: this.state.windDegrees,
-				weatherDescription: this.state.weatherDescription,
-				date: (new Date(this.state.date * 1000)).toLocaleDateString("en-GB")
+				temperature: this.state.current.temp, 
+				precipitation: Math.round(this.state.hourly[0].pop * 100),
+				windSpeed: Math.round(this.state.current.wind_speed * 3.6),
+				windDegrees: this.state.current.wind_deg,
+				weatherDescription: this.state.current.weather[0].main,
+				date: (new Date(this.state.current.dt * 1000)).toLocaleDateString("en-GB")
 			}); 
 		} else if (e.target.id === 'Tomorrow') {
 			this.setState({
@@ -102,15 +105,15 @@ class Homepage extends React.Component {
 			<main>
 				<NavBar currentLocation={this.state.location} handleInput={this.handleChange} handleSubmit={this.handleSubmit}> </NavBar>
 				<Header currentLocation={this.state.location} handleForecastPeriodChange={this.handleForecastPeriodChange}></Header>
-				<div style={styles.widgetsContainer}>
+				<div className="widgetsContainer" style={styles.widgetsContainer}>
 					<Link to="/temperature">
-						<WeatherWidget style={styles.widgetTemp} name="Temperature" value={this.state.temperature+"°C"}/>
+						<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={this.state.temperature+"°C"}/>
 					</Link>
 					<Link to="/precipitation">
-						<WeatherWidget style={styles.widgetPrec} name="Precipitation" value={this.state.precipitation}/>
+						<WeatherWidget className="widgetPrec" style={styles.widgetPrec} name="Precipitation" value={this.state.precipitation}/>
 					</Link>
 					<Link to="/wind">
-						<WeatherWidget style={styles.widgetWind} name="Wind" value={this.state.windSpeed+" km/h"}/>
+						<WeatherWidget className="widgetWind" style={styles.widgetWind} name="Wind" value={this.state.windSpeed+" km/h"}/>
 					</Link>
 				</div>
 			</main>
