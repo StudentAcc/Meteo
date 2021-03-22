@@ -34,6 +34,8 @@ class WeatherChart extends React.Component {
 	getSVGY(y) {
 		// transpose height as its top-bottom order
 		const {svgHeight} = this.state;
+		if (this.getMaxY()===0)
+			return svgHeight;
 		return svgHeight - ((y / this.getMaxY()) * svgHeight);
 	}
 	drawSVGBars() {
@@ -41,16 +43,16 @@ class WeatherChart extends React.Component {
 			<g class='bars'>
 				{this.props.data.map((coord) => (
 					<>
-						<text style={{
+						{/* <text style={{
 							fontSize: "7px",
 							fill: "#e4ecef"
 						 }}
-						 x={this.getSVGX(coord.x+0.05)} y={this.getSVGY(coord.y+1)}> {Math.round(coord.y)+"%"} </text>
-						<polyline stroke="#ffffff" stroke-width="1"
-						 points={this.getSVGX(coord.x)+","+this.getSVGY(coord.y)+" "+this.getSVGX(coord.x+0.25)+","+this.getSVGY(coord.y)}/>
-						<rect fill="#e4ecef" fill-opacity="0.3" style={{transition: "0.5s all"}}
-						 x = {this.getSVGX(coord.x)} y = {this.getSVGY(coord.y)} 
-						 width='5%' height={coord.y-4}/>
+						 x={this.getSVGX(coord.x+0.05)} y={4-this.getSVGY(coord.y+1)}> {Math.round(coord.y)+"%"} </text> */}
+						{/* <polyline stroke="#ffffff" stroke-width="1"
+						 points={this.getSVGX(coord.x)+","+this.getSVGY(coord.y)+" "+this.getSVGX(coord.x+0.25)+","+this.getSVGY(coord.y)}/> */}
+						<rect fill="#e4ecef" fill-opacity="0.3" transform="rotate(180 247 50)"  style={{transition: "0.5s all"}}
+						 x = {this.getSVGX(coord.x)} y = {8-this.getSVGY(coord.y)} 
+						 width='5%' height={coord.y}/>
 					</>
 				))}
 			</g>
