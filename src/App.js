@@ -74,7 +74,7 @@ class App extends React.Component {
               <WeatherWidgetMain {...this.state} category="Wind"/>
             </Route>
             <Route exact path="/map">
-            <MapWidget lat={this.state.latitude} lng={this.state.longitude}/>
+            <MapWidget {...this.state}/>
             </Route>
             <Redirect from="*" to="/"/>
             </Switch>

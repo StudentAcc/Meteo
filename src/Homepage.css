@@ -1,0 +1,45 @@
+/* Tablet: Portrait
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) {
+	
+	.widgetsContainer {
+		grid-template-rows: repeat(3,1fr);   
+		grid-row-gap: 20px;
+	}
+	.widgetTemp {
+		grid-row: 1;
+	}
+	.widgetPrec {
+		grid-row: 2;
+	}
+	.widgetWind {
+		grid-row: 3;
+	}
+}
+
+/* Tablet: Landscape */
+/* @media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape)  {
+
+	.widgetsContainer {
+		grid-template-columns: repeat(3,1fr);
+		grid-column-gap: 20px;
+		position: relative;
+	}	
+	.widgetTemp {
+		padding-bottom: 20px;
+		grid-column: 1;
+	}
+	.widgetPrec {
+		grid-column:2;
+	}
+	.widgetWind {
+		grid-column: 3;
+	}
+} */
+
+
