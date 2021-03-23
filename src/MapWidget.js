@@ -73,9 +73,7 @@ class MapWidget extends React.Component {
 	}
 
 	getCurrentTimestamp() {
-		const dateTime = Date.now();
-		const timestamp = Math.floor(dateTime / 1000);
-		return timestamp;
+		return Math.floor(Date.now()/1000);
 	}
 
 	updateMarker = (e) => {
@@ -192,9 +190,5 @@ class MapWidget extends React.Component {
 		)
 	}
 }
-
-{/* <TileLayer url={`https://tile.openweathermap.org/map/clouds_new/13/${coords[0]}/${coords[1]}.png?appid=${key}`}/>
-				<TileLayer url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${key}`}/>
-				<TileLayer url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${key}`}/> */}
 
 export default MapWidget;

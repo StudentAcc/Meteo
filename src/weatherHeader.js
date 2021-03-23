@@ -8,11 +8,11 @@ class WeatherHeader extends React.Component {
 	render() {
 		return( 
 			<div className="headerBorder">
-				{this.props.wCategory === "Temperature" &&
+				{this.props.type === "Temperature" &&
 					<TemperatureHeader {... this.props}/>}
-				{this.props.wCategory === "Precipitation" &&
+				{this.props.type === "Precipitation" &&
 					<PrecipitationHeader {... this.props}/>}
-				{this.props.wCategory === "Wind" &&
+				{this.props.type === "Wind" &&
 					<WindHeader {... this.props}/>}
 			</div>
 		);

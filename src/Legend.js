@@ -34,7 +34,7 @@
 //       let from;
 //       let to;
 
-//       for (let i = 0; i < grades.length; i++) {
+//       for (let i = 0; i < grades.length-1; i++) {
 //         from = grades[i];
 //         to = grades[i + 1];
 

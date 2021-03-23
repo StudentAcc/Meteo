@@ -16,7 +16,7 @@ class Header extends React.Component {
 	handleClick(e) {
 		e.preventDefault();
 		this.updateSelected(e.target.id);
-		this.props.handleForecastPeriodChange(e);		
+		this.props.handleForecastChange(e);		
 		e.target.style.textDecoration = 'underline';
 	}
 	render() {
@@ -47,7 +47,7 @@ let styles = {
 		position: 'relative',
 		flex: '1',
 		textAlign: 'right',
-		paddingRight: '40px'
+		paddingRight: '2%'
 	}
 }
 export default Header;

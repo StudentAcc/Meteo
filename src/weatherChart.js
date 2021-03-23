@@ -1,4 +1,6 @@
 import React from 'react';
+import "./weather_icons/css/weather-icons-wind.min.css";
+import "./weather_icons/css/weather-icons.min.css";
 
 class WeatherChart extends React.Component {
 	constructor(props) {
@@ -9,22 +11,23 @@ class WeatherChart extends React.Component {
 			color: 'white',
 			svgHeight: 100,
 			svgWidth: 500,
+			hasMounted: true
 		}
 	}
 	getMinX() {
-		const {data} = this.state;
+		const data = this.props.data;
 		return data[0].x;
 	}
 	getMaxX() {
-		const {data} = this.state;
+		const data = this.props.data;
 		return data[data.length - 1].x;
 	}
 	getMinY() {
-		const {data} = this.state;
+		const data = this.props.data;
 		return Math.min(...data.map(d => d.y));
 	}
 	getMaxY() {
-		const {data} = this.state;
+		const data = this.props.data
 		return Math.max(...data.map(d => d.y));
 	}
 	getSVGX(x) {
@@ -38,18 +41,29 @@ class WeatherChart extends React.Component {
 			return svgHeight;
 		return svgHeight - ((y / this.getMaxY()) * svgHeight);
 	}
+	drawWindChart() {
+		return (
+			<g>
+				{this.props.data.map((coord) => (
+					<text x={this.getSVGX(coord.x)} y={this.getSVGY(0)}>
+						<i className="wi wi-wind from-90-deg"/> 
+					</text>
+				))}
+			</g>
+		);
+	}
 	drawSVGBars() {
 		return ( 
-			<g class='bars'>
+			<g className='bars'>
 				{this.props.data.map((coord) => (
 					<>
-						{/* <text style={{
+						<text style={{
 							fontSize: "7px",
 							fill: "#e4ecef"
 						 }}
-						 x={this.getSVGX(coord.x+0.05)} y={4-this.getSVGY(coord.y+1)}> {Math.round(coord.y)+"%"} </text> */}
-						{/* <polyline stroke="#ffffff" stroke-width="1"
-						 points={this.getSVGX(coord.x)+","+this.getSVGY(coord.y)+" "+this.getSVGX(coord.x+0.25)+","+this.getSVGY(coord.y)}/> */}
+						 x={this.getSVGX(coord.x+0.05)} y={4-this.getSVGY(coord.y+1)}> {Math.round(coord.y)+"%"} </text>
+						<polyline stroke="#ffffff" stroke-width="1"
+						 points={this.getSVGX(coord.x)+","+this.getSVGY(coord.y)+" "+this.getSVGX(coord.x+0.25)+","+this.getSVGY(coord.y)}/>
 						<rect fill="#e4ecef" fill-opacity="0.3" transform="rotate(180 247 50)"  style={{transition: "0.5s all"}}
 						 x = {this.getSVGX(coord.x)} y = {8-this.getSVGY(coord.y)} 
 						 width='5%' height={coord.y}/>
@@ -59,10 +73,13 @@ class WeatherChart extends React.Component {
 		)
 	}
 	drawSVGPolygon() {
-		const {data, color} = this.state;
+		const {color} = this.state;
+		const data = this.props.data;
 		let path = "";
-		for (const coord of data)
-			path += ` ${this.getSVGX(coord.x)},${this.getSVGY(coord.y-1)}`;
+		console.log("looping...");
+		for (var i=0; i<data.length; i++) {
+			path += ` ${this.getSVGX(data[i].x)},${this.getSVGY(data[i].y-1)}`;
+		}
 		const pathl = path;
 		path += ` ${this.getSVGX(this.getMaxX())},${this.getSVGY(1)} ${this.getSVGX(0)},${this.getSVGY(1)}`
 		return (
@@ -75,7 +92,7 @@ class WeatherChart extends React.Component {
 	  }
 	drawXAxisLabel() {
 		return ( 
-			<g class="xLabel">
+			<g className="xLabel">
 				{this.props.data.map((coord) => (		
 					<text style={{
 						fontSize: "7px",
@@ -88,7 +105,7 @@ class WeatherChart extends React.Component {
 	}
 	drawDataPoints() {
 		return ( 
-			<g class="dataPoints">
+			<g className="dataPoints">
 				{this.props.data.map((coord) => (
 					<>
 						<text style={{
@@ -109,13 +126,16 @@ class WeatherChart extends React.Component {
 		);
 	}
 	render() {
+		const {hasMounted} = this.state;
+		if (!hasMounted) 
+			return <h1> Please wait </h1>
 		const {svgHeight, svgWidth} = this.state;
 		return (
 			<>
 			  <svg style={{margin: "5%"}} viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
 				{this.state.type === "Temperature" && this.drawSVGPolygon()}				
 				{this.state.type === "Precipitation" && this.drawSVGBars()}	
-				{/* {this.state.type === "Wind" && this.drawArrows()} */}
+				{/* {this.state.type === "Wind" && this.drawWindChart()} */}
 				{this.drawXAxisLabel()}
 			  </svg>
 			</>
