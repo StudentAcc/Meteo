@@ -61,12 +61,12 @@ class MapWidget extends React.Component {
 		super(props);
 		this.state = {
 			location: this.props.location,
-			temperature: this.props.current.temp,
+			temperature: this.props.forecast.temp,
 			precipitation: Math.round(this.props.hourly[0].pop * 100),
-			windSpeed: Math.round(this.props.current.wind_speed * 3.6),
-			windDegrees: this.props.current.wind_deg,
-			weatherDescription: this.props.current.weather[0].main,
-			date: (new Date(this.props.current.dt * 1000)).toLocaleDateString("en-GB"),
+			windSpeed: Math.round(this.props.forecast.wind_speed * 3.6),
+			windDegrees: this.props.forecast.wind_deg,
+			weatherDescription: this.props.forecast.weather[0].main,
+			date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
 			daily: this.props.daily,
 			hasMounted: false
 		};
