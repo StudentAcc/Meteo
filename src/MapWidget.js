@@ -2,12 +2,12 @@ import React from "react";
 import {useMapEvents, MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from "leaflet";
-// import Geocode from "react-geocode";
+import Geocode from "react-geocode";
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import Legend from "./Legend";
-// import {fetchWeatherData} from "./App";
+import App from "./App";
 // import NavBar from './navBar';
 
 let DefaultIcon = L.icon({
@@ -36,28 +36,6 @@ class MapWidget extends React.Component {
 	// 	this.props = this.fetchWeatherData();
 	// }
 
-	// fetchWeatherData (){
-	// 	const key = "3a272e399eccb14fac2be5eeca1b5d00";
-	// 	const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${this.props.lat}&lon=${this.props.lng}&exclude=minutely&appid=${key}&units=metric`
-	// 	fetch(forecast).then(res => res.json())
-	// 	.then((data) => {
-	// 		console.log(data);
-	// 		Geocode.fromLatLng(this.props.lat, this.props.lng).then((res) => {
-	// 			const loc = res.results[0].address_components[2].long_name;
-	// 			this.setState({
-	// 				latitude: this.props.lat,
-	// 				longitude: this.props.lng,
-	// 				location: loc,
-	// 				current: data.current,
-	// 				daily: data.daily,
-	// 				hourly: data.hourly,
-	// 				hasFetched: true});
-	// 	  		}, (err) => {
-	// 			console.log(err);
-	// 		});
-	// 	});
-	// }
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -69,6 +47,60 @@ class MapWidget extends React.Component {
 			weatherDescription: this.props.forecast.weather[0].main,
 			date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
 			daily: this.props.daily,
+			hasMounted: false
+		};
+		this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
+		// this.fetchWeatherDataAux = this.fetchWeatherData.bind(this);
+	}
+
+	fetchWeatherData (lat,lng){
+		const key = "3a272e399eccb14fac2be5eeca1b5d00";
+		const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely&appid=${key}&units=metric`
+		fetch(forecast).then(res => res.json())
+		.then((data) => {
+			console.log(data);
+			Geocode.fromLatLng(this.state.lat, this.state.lng).then((res) => {
+				const loc = res.results[0].address_components[2].long_name;
+				this.setState({
+					latitude: this.state.lat,
+					longitude: this.state.lng,
+					location: loc,
+					forecast: data.hourly[0],
+					daily: data.daily,
+					hourly: data.hourly,
+					hasFetched: true});
+		  		}, (err) => {
+				console.log(err);
+			});
+		});
+	}
+
+	// updateWeatherData (lat,lng){
+	// 	this.fetchWeatherData(lat,lng) ;
+	// 	this.state = {
+	// 		location: this.state.location,
+	// 		temperature: this.state.forecast.temp,
+	// 		precipitation: Math.round(this.state.hourly[0].pop * 100),
+	// 		windSpeed: Math.round(this.state.forecast.wind_speed * 3.6),
+	// 		windDegrees: this.state.forecast.wind_deg,
+	// 		weatherDescription: this.state.forecast.weather[0].main,
+	// 		date: (new Date(this.state.forecast.dt * 1000)).toLocaleDateString("en-GB"),
+	// 		daily: this.state.daily,
+	// 		hasMounted: false
+	// 	};
+	// }
+
+	updateWeatherData (lat,lng){
+		this.fetchWeatherData(lat,lng) ;
+		this.state = {
+			location: this.state.location,
+			temperature: this.state.forecast.temp,
+			precipitation: Math.round(this.state.hourly[0].pop * 100),
+			windSpeed: Math.round(this.state.forecast.wind_speed * 3.6),
+			windDegrees: this.state.forecast.wind_deg,
+			weatherDescription: this.state.forecast.weather[0].main,
+			date: (new Date(this.state.forecast.dt * 1000)).toLocaleDateString("en-GB"),
+			daily: this.state.daily,
 			hasMounted: false
 		};
 	}
@@ -169,6 +201,7 @@ class MapWidget extends React.Component {
 						<LayersControl.Overlay name="Wind speed">
 							<LayerGroup>
 								<TileLayer 
+								// PLace holders
 								attribution='<img src="logo192.png" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw);"/>'
 								url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
@@ -191,11 +224,16 @@ class MapWidget extends React.Component {
 					</LayersControl>
 					<Marker ref={(ref) => { this.mapMarker = ref; }} position={coords} draggable = {true} eventHandlers={{
     					dragend: (e) => {
-							this.temp = this.mapMarker.getLatLng();
+							var temp = this.mapMarker.getLatLng();
       						console.log('marker moved'+this.mapMarker.getLatLng())
-							this.lat = this.temp[0]
-							this.lng = this.temp[1]
-							// fetchWeatherData()
+							this.setState ({
+								lat: temp.lat,
+								lng: temp.lng
+							})
+							console.log(this.state.lat)
+							console.log(this.state.lng)
+							this.updateWeatherData(this.state.lat,this.state.lng)
+							// App.fetchWeatherData()
     					}}}>
 						<Popup>					
 						Temperature: {this.state.temperature+"°C"}

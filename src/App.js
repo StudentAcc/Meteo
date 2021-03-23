@@ -7,7 +7,7 @@ import MapWidget from "./MapWidget";
 import weatherBackground from './weatherDescriptions';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,31 +31,37 @@ class App extends React.Component {
 		  navigator.geolocation.getCurrentPosition((position) => {
 			const lat = position.coords.latitude;
 			const lon = position.coords.longitude;
-			const key = "3a272e399eccb14fac2be5eeca1b5d00";
-			const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${key}&units=metric`
-			fetch(forecast).then(res => res.json())
-			.then((data) => {
-			  console.log(data);
-			  Geocode.fromLatLng(lat, lon).then((res) => {
-          const loc = res.results[0].address_components[2].long_name;
-          this.setState({
-            latitude: lat,
-            longitude: lon,
-            location: loc,
-            forecast: data.hourly[0],
-            daily: data.daily,
-            hourly: data.hourly,
-            hasFetched: true
-          });
-			  }, (err) => {
-				console.log(err);
-			  });
-			}, (err) => {
-			  console.log(err); 
-			});
-		  });
-		}
+      this.fetchWeatherDataAux(lat,lon);
+    })
 	}
+  }
+
+  fetchWeatherDataAux (lat, lon){
+    const key = "3a272e399eccb14fac2be5eeca1b5d00";
+    const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${key}&units=metric`
+    fetch(forecast).then(res => res.json())
+    .then((data) => {
+      console.log(data);
+      Geocode.fromLatLng(lat, lon).then((res) => {
+        const loc = res.results[0].address_components[2].long_name;
+        this.setState({
+          latitude: lat,
+          longitude: lon,
+          location: loc,
+          current: data.current,
+          forecast: data.hourly[0],
+          daily: data.daily,
+          hourly: data.hourly,
+          hasFetched: true
+        });
+      }, (err) => {
+      console.log(err);
+      });
+    }, (err) => {
+      console.log(err); 
+    });
+  }
+
   handleChange(e) {
 		this.setState({
 		  value: e.target.value,
@@ -144,7 +150,9 @@ class App extends React.Component {
                type="Wind"/>
             </Route>
             <Route exact path="/map">
-            <MapWidget {...this.state}/>
+              <MapWidget {...this.state}
+              fetchWeatherDataAux={this.fetchWeatherDataAux}
+              />
             </Route>
             <Redirect from="*" to="/"/>
             </Switch>
@@ -153,4 +161,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+// export default App;
