@@ -1,5 +1,5 @@
 import React from "react";
-import {useMapEvents, MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
+import {useMap, MapConsumer, MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from "leaflet";
 import Geocode from "react-geocode";
@@ -8,6 +8,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import Legend from "./Legend";
 import App from "./App";
+import {withMyHook} from "./MyComponent"
 // import NavBar from './navBar';
 
 let DefaultIcon = L.icon({
@@ -113,15 +114,46 @@ class MapWidget extends React.Component {
 		this.map.leafletElement.position.setLatLng(e.latlng)
 		console.log("clicked")
 	}
+
+	baseLayerChange = event => {
+		console.log('baseLayerChange event', event);
+		var x = document.getElementsByClassName("leaflet-layer");
+		var i;
+		for (i = 0; i < x.length; i++) {
+			// console.log(x[i].nextElementSibling.innerHTML);
+			console.log(i);
+			console.log(x[i].style.opacity);
+		  	if (x[i].style.opacity == 1.1){
+				x[i].style.zIndex = 10;
+				// var map = withMyHook()
+				// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
+		  	} else {
+				x[i].style.zIndex = 0;
+			  }
+		}
+
+		// x[1].style.zIndex = "10";
+
+		// var x = document.getElementsByClassName("leaflet-control-layers-selector");
+		// var i;
+		// for (i = 6; i < x.length; i++) {
+		// 	// console.log(x[i].nextElementSibling.innerHTML);
+		// 	console.log(event.name);
+		//   	if (x[i].nextElementSibling.innerHTML.substring(1) != event.name){
+		// 		console.log(x[i].nextElementSibling.innerHTML);
+		// 		x[i].checked = false;
+		// 		console.log(event.name)
+		// 		// var map = withMyHook()
+		// 		// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
+		//   	}
+		// }
+		// // event.layer.remove();
+	}
 	
-	// baseLayerChange = event => {
-	// 	console.log('baseLayerChange event', event);
-	// }
-	
-	// whenReadyHandler = event => {
-	// 	const { target } = event;
-	// 	target.on('baselayerchange', this.baseLayerChange);
-	// }
+	whenReadyHandler = event => {
+		const { target } = event;
+		target.on('baselayerchange', this.baseLayerChange);
+	}
 
 	render() {
 		const coords = [this.props.latitude, this.props.longitude]
@@ -136,18 +168,19 @@ class MapWidget extends React.Component {
 		return (
 			<div style = {{height: '100vh'}}>
 				{/* <NavBar></NavBar> */}
-				<MapContainer 
+				<MapContainer
 				style={{ width: '100%', height: '100%', zIndex:'0'  }}
 				center={coords} 
 				zoom={15} 
 				scrollWheelZoom={true}
-				// whenReady={this.whenReadyHandler}
+				// whenCreated={(map: L.Map} => void};
+				whenReady={this.whenReadyHandler}
 				eventHandlers={{
 					click: () => {
 					console.log('marker clicked')
 					},
 				}}>
-					<LayersControl position="topright">
+					<LayersControl position="topright" collapsed={false}>
 						<LayersControl.BaseLayer checked name="Standard">
 							<TileLayer
 							attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -183,49 +216,60 @@ class MapWidget extends React.Component {
 							url="http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
 							/>
 						</LayersControl.BaseLayer>
-						<LayersControl.Overlay name="Temperature">
+					</LayersControl>
+					<LayersControl position="topright" collapsed={false}>
+						<LayersControl.BaseLayer name="Temperature">
 							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+								<TileLayer 
+								opacity = {1.1}
+								url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Precipitation">
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Precipitation">
 							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+								<TileLayer 
+								opacity = {1.1}
+								url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Clouds">
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Clouds">
 							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+								<TileLayer 
+								opacity = {1.1}
+								url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Wind speed">
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Wind speed">
 							<LayerGroup>
 								<TileLayer 
 								// PLace holders
+								opacity = {1.1}
 								attribution='<img src="logo192.png" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw);"/>'
 								url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Wind speed - with direction">
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Wind speed - with direction">
 							<LayerGroup>
 								<TileLayer 
+								opacity = {1.1}
 								attribution='<img src="test.png" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw);"/>'
 								url={`http://maps.openweathermap.org/maps/2.0/weather/WND/{z}/{x}/{y}?date=${this.getCurrentTimestamp()}&appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 								{/* <img src="test.png" style="Legend.css"/> */}
 							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Sea level pressure">
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Sea level pressure">
 							<LayerGroup>
 								<TileLayer
+								opacity = {1.1}
 								attribution='<div id="mydiv" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw); z-index: 9; background-color: #f1f1f1; text-align: center; border: 1px solid #d3d3d3;"><div id="mydivheader" style = "padding: 10px; cursor: move; z-index: 10; background-color: #2196F3; color: #fff;">Click here to move</div><img src="logo192.png" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw);"/><script> dragElement(document.getElementById("mydiv"));                function dragElement(elmnt) {          var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;          if (document.getElementById(elmnt.id + "header")) { document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;          } else {elmnt.onmousedown = dragMouseDown;          }                  function dragMouseDown(e) {            e = e || window.event;            e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY; document.onmouseup = closeDragElement; document.onmousemove = elementDrag;          }                  function elementDrag(e) {            e = e || window.event;            e.preventDefault();  pos1 = pos3 - e.clientX;            pos2 = pos4 - e.clientY;            pos3 = e.clientX;            pos4 = e.clientY;   elmnt.style.top = (elmnt.offsetTop - pos2) + "px";            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";          }                  function closeDragElement() {   document.onmouseup = null;            document.onmousemove = null;          }        }        </script></div>'
 								url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
-						</LayersControl.Overlay>
+						</LayersControl.BaseLayer>
 					</LayersControl>
 					<Marker ref={(ref) => { this.mapMarker = ref; }} position={coords} draggable = {true} eventHandlers={{
-    					dragend: (e) => {
+						dragend: (e) => {
 							var temp = this.mapMarker.getLatLng();
-      						console.log('marker moved'+this.mapMarker.getLatLng())
+							console.log('marker moved'+this.mapMarker.getLatLng())
 							this.setState ({
 								lat: temp.lat,
 								lng: temp.lng
@@ -234,7 +278,7 @@ class MapWidget extends React.Component {
 							console.log(this.state.lng)
 							this.updateWeatherData(this.state.lat,this.state.lng)
 							// App.fetchWeatherData()
-    					}}}>
+						}}}>
 						<Popup>					
 						Temperature: {this.state.temperature+"°C"}
 						<br/>
