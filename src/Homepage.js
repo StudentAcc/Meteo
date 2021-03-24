@@ -27,7 +27,7 @@ class Homepage extends React.Component {
 				<Header currentLocation={this.props.location} handleForecastChange={this.props.handleForecastChange}></Header>
 				<div className="widgetsContainer" style={styles.widgetsContainer}>
 					<Link to="/temperature">
-						<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={this.props.temp+"°C"}/>
+						<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={this.props.temp}/>
 					</Link>
 					<Link to="/precipitation">
 						<WeatherWidget className="widgetPrec" style={styles.widgetPrec} name="Precipitation" value={Math.round(this.props.pop * 100)}/>
