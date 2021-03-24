@@ -1,4 +1,5 @@
 import React from "react";
+import "./weather_icons/css/weather-icons.css";
 
 class PrecipitationHeader extends React.Component {
 	render() {
@@ -12,14 +13,10 @@ class PrecipitationHeader extends React.Component {
 					<li style={styles.hli}> Humidity </li> 
 					<li style={styles.li}> {(this.props[0].humidity)+"%"} </li>
 				</ul>	
-				<ul style={styles.ul}>
-					<li style={styles.hli}> Dew Point </li> 
-					<li style={styles.li}> {this.props[0].dew_point} </li>
-				</ul>
 				<div style={{float: "right", justifyContent: "right"}}>
 				<ul style={styles.ul}>
-					<li style={styles.li}> Visibility: {this.props[0].visibility} </li>
-					<li style={styles.li}> Clouds: {this.props[0].clouds} </li>
+					<li style={styles.li}> Visibility: {Math.round((this.props[0].visibility/1000))+"km"} </li>
+					<li style={styles.li}> Clouds: {this.props[0].clouds+"%"} </li>
 				</ul>
 				</div>
 		</div>
@@ -33,10 +30,10 @@ let styles = {
 		display: "inline-block"
 	},
 	hli: {
-		fontSize: "30px",
+		fontSize: "25px",
 	},
 	li: {
-		fontSize: "25px"
+		fontSize: "20px"
 	}
 }
 

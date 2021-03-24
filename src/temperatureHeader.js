@@ -1,4 +1,5 @@
 import React from "react";
+import "./weather_icons/css/weather-icons.css";
 
 class TemperatureHeader extends React.Component {
 	render() {
@@ -6,11 +7,11 @@ class TemperatureHeader extends React.Component {
 			<div style={{color: "white"}}>
 				<ul style={styles.ul}>
 					<li style={styles.hli}> Temperature </li> 
-					<li style={styles.li}> {this.props[0].temp+"°C"} </li>
+					<li style={styles.li}> {this.props[0].temp}<i className="wi wi-celsius"></i> </li>
 				</ul>				
 				<ul style={styles.ul}>
 					<li style={styles.hli}> Feels like </li> 
-					<li style={styles.li}> {this.props[0].feels_like+"°C"} </li>
+					<li style={styles.li}> {this.props[0].feels_like}<i className="wi wi-celsius"></i> </li>
 				</ul>
 				<div style={{float: "right", justifyContent: "right"}}>
 				{/* <ul style={styles.ul}>
@@ -29,10 +30,10 @@ let styles = {
 		display: "inline-block"
 	},
 	hli: {
-		fontSize: "30px",
+		fontSize: "25px",
 	},
 	li: {
-		fontSize: "25px"
+		fontSize: "20px"
 	}
 }
 
