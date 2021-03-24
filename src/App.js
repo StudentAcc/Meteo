@@ -22,7 +22,6 @@ class App extends React.Component {
     }
     Geocode.setLocationType("ROOFTOP");
 		Geocode.setApiKey("AIzaSyAZOPHHp7iiz1Y9dAcsLxU86qSKvWEsWFk");
-    this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleForecastChange = this.handleForecastChange.bind(this);
   }
@@ -56,14 +55,8 @@ class App extends React.Component {
 		  });
 		}
 	}
-  handleChange(e) {
-		this.setState({
-		  value: e.target.value,
-		});
-	}
-  handleSubmit(e) {
-		e.preventDefault();
-		const location = this.state.value; 
+  handleSubmit(address) {
+		const location = address;
 		Geocode.fromAddress(location).then((res) => {
 		  const {lat, lng} = res.results[0].geometry.location;
 		  const key = "3a272e399eccb14fac2be5eeca1b5d00";
@@ -119,28 +112,21 @@ class App extends React.Component {
               <Homepage {...this.state.forecast} 
                location={this.state.location} 
                handleSubmit={this.handleSubmit}
-               handleChange={this.handleChange}
                handleForecastChange={this.handleForecastChange}/>
               </Route>
             <Route exact path="/temperature">
               <WeatherWidgetMain {...this.state.hourly} 
                location={this.state.location} 
-               handleSubmit={this.handleSubmit}
-               handleChange={this.handleChange}
                type="Temperature"/>
             </Route>
             <Route exact path="/precipitation">
               <WeatherWidgetMain {...this.state.hourly} 
                location={this.state.location} 
-               handleSubmit={this.handleSubmit}
-               handleChange={this.handleChange}
                type="Precipitation"/>
             </Route>
             <Route exact path="/wind">
               <WeatherWidgetMain {...this.state.hourly} 
                location={this.state.location} 
-               handleSubmit={this.handleSubmit}
-               handleChange={this.handleChange}
                type="Wind"/>
             </Route>
             <Route exact path="/map">

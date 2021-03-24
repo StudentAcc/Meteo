@@ -1,7 +1,6 @@
 import React from "react";
 import "./weather_icons/css/weather-icons.css";
 
-
 class PrecipitationHeader extends React.Component {
 	render() {
 		return ( 

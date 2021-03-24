@@ -2,12 +2,17 @@ import React from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import './weatherWidget.css';
+import "./weather_icons/css/weather-icons.css";
+import "./weather_icons/css/weather-icons-wind.css";
 
 class WeatherWidget extends React.Component {
 	renderWidgetType() {
 		if (this.props.name === 'Precipitation') 
 			return <CircularProgressbar styles={styles.meter} value={this.props.value} text={`${this.props.value}%`}/>
+		else if (this.props.name === "Temperature")
+			return <p className="pvalue"> {this.props.value} <i className="wi wi-celsius"></i></p>
 		return <p className="pvalue"> {this.props.value} </p>
+
 	}
 	render() {
 		return (
