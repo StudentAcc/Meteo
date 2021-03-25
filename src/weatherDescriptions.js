@@ -20,8 +20,8 @@ const weatherBackground = {
     backgroundImage: "linear-gradient(to right top, #ffffff, #fff2fd, #ffe3ec, #ffd8cc, #ffd3a8, #fbd8a1, #f5de9c, #ebe499, #efebad, #f3f2c2, #f8f9d6, #feffea)",
   },
   Thunderstorm: {
-    //yellow gray white
-    backgroundImage: "linear-gradient(to right top, #5a5e19, #74761a, #908e1a, #afa617, #d0bf11, #d8c616, #dfcd1b, #e7d41f, #d6ca2a, #c5c032, #b6b639, #a7ac3e)",
+    //dark grey with blue
+    backgroundImage: "linear-gradient(to right top, #403e2d, #333c2f, #293932, #243534, #243034, #2a3539, #31393d, #373e42, #454e51, #535f60, #63706f, #74817d)",
   },
 };
 
