@@ -50,7 +50,7 @@ class MapWidget extends React.Component {
 			daily: this.props.daily,
 			hasMounted: false
 		};
-		this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
+		// this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
 		// this.fetchWeatherDataAux = this.fetchWeatherData.bind(this);
 	}
 
