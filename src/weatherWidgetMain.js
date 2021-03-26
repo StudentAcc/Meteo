@@ -10,24 +10,24 @@ class WeatherWidgetMain extends React.Component {
 		super(props);
 		this.state = {
 			type: this.props.type,
-			data: this.props.daa,
+			data: this.props.weatherData,
 			chartData: [],
 			hasMounted: false
 		}
 	}
 	formatDailyData(tstart, tend) {
 		const {type} = this.state
-		const {daa} = this.props;
+		const {weatherData} = this.props;
 		let chartData = []
 		let y;
 		for (var x=0, i=tstart; i<tend+2; x++, i++) {
-			const dth =  (new Date(daa[0].hourly[i].dt * 1000)).getHours();
+			const dth =  (new Date(weatherData[0].hourly[i].dt * 1000)).getHours();
 			if (type === "Temperature") 
-				y = daa[0].hourly[i].temp;
+				y = weatherData[0].hourly[i].temp;
 			else if (type === "Precipitation") 
-				y = daa[0].hourly[i].pop * 100;
+				y = weatherData[0].hourly[i].pop * 100;
 			else if (type === "Wind") 
-				y = Math.round(daa[0].hourly[i].wind_deg);
+				y = Math.round(weatherData[0].hourly[i].wind_deg);
 			chartData.push({x,y,dth});
 		}
 		this.setState({chartData: chartData});
@@ -35,24 +35,24 @@ class WeatherWidgetMain extends React.Component {
 	formatWeeklyData() {
 		const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		const {type} = this.state;
-		const {daa} = this.props;
+		const {weatherData} = this.props;
 		let chartData = []
 		let y;
-		for (var x=0; x<daa[1].daily.length; x++) {
-			const dth = weekDays[(new Date(daa[1].daily[x].dt * 1000)).getDay()];
+		for (var x=0; x<weatherData[1].daily.length; x++) {
+			const dth = weekDays[(new Date(weatherData[1].daily[x].dt * 1000)).getDay()];
 			if (type === "Temperature") 
-				y = daa[1].daily[x].temp.day;
+				y = weatherData[1].daily[x].temp.day;
 			else if (type === "Precipitation") 
-				y = daa[1].daily[x].pop * 100;
+				y = weatherData[1].daily[x].pop * 100;
 			else if (type === "Wind") 
-				y = Math.round(daa[1].daily[x].wind_deg);
+				y = Math.round(weatherData[1].daily[x].wind_deg);
 			chartData.push({x,y,dth});
 		}
 		this.setState({chartData: chartData});
 	}
 	handleForecastChange(e) {
 		e.preventDefault();
-		const tstart = (new Date(this.props.daa[0].hourly[0].dt * 1000)).getHours();
+		const tstart = (new Date(this.props.weatherData[0].hourly[0].dt * 1000)).getHours();
 		let tend = 24 - tstart;
 		if (e.target.id === 'Today') 
 		  this.formatDailyData(0, tend); 
@@ -62,7 +62,7 @@ class WeatherWidgetMain extends React.Component {
 		  this.formatWeeklyData();
 	}
 	componentDidMount() {
-		const tstart = (new Date(this.props.daa[0].hourly[0].dt * 1000)).getHours();
+		const tstart = (new Date(this.props.weatherData[0].hourly[0].dt * 1000)).getHours();
 		let tend = 24 - tstart;
 		this.formatDailyData(0, tend);
 		this.setState({hasMounted: true});
