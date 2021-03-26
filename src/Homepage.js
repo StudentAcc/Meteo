@@ -2,7 +2,6 @@ import React from "react";
 import NavBar from './navBar';
 import WeatherWidget from './weatherWidget';
 import Header from './header';
-import Geocode from "react-geocode";
 import { Link } from "react-router-dom";
 import "./Homepage.css";
 

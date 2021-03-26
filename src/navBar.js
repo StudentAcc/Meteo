@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./searchBar";
 import { BrowserRouter as Router, /*Route, Switch*/ } from "react-router-dom";
-import { faHome, faSatelliteDish, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 
 class NavBar extends React.Component {
