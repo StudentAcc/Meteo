@@ -180,7 +180,7 @@ class MapWidget extends React.Component {
 					console.log('marker clicked')
 					},
 				}}>
-					<LayersControl position="topright" collapsed={false}>
+					<LayersControl position="topright" collapsed={true}>
 						<LayersControl.BaseLayer checked name="Standard">
 							<TileLayer
 							attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -192,10 +192,10 @@ class MapWidget extends React.Component {
 							url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
 							/>
 						</LayersControl.BaseLayer>
-						<LayersControl.BaseLayer name="Satelite">
+						<LayersControl.BaseLayer name="Streets">
 							<TileLayer
 							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
-							url="http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+							url="http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
 							/>
 						</LayersControl.BaseLayer>
 						<LayersControl.BaseLayer name="Terrain">
@@ -204,24 +204,29 @@ class MapWidget extends React.Component {
 							url="http://mt0.google.com/vt/lyrs=p&x={x}&y={y}&z={z}"
 							/>
 						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Satelite">
+							<TileLayer
+							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
+							url="http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+							/>
+						</LayersControl.BaseLayer>
 						<LayersControl.BaseLayer name="Hybrid">
 							<TileLayer
 							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
 							url="http://mt0.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
 							/>
 						</LayersControl.BaseLayer>
-						<LayersControl.BaseLayer name="Streets">
-							<TileLayer
-							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
-							url="http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
-							/>
-						</LayersControl.BaseLayer>
 					</LayersControl>
-					<LayersControl position="topright" collapsed={false}>
+					<LayersControl position="topright" collapsed={true}>
+						<LayersControl.BaseLayer name="None" checked>
+							<LayerGroup>
+							</LayerGroup>
+						</LayersControl.BaseLayer>
 						<LayersControl.BaseLayer name="Temperature">
 							<LayerGroup>
 								<TileLayer 
 								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/temperature.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
 						</LayersControl.BaseLayer>
@@ -229,6 +234,7 @@ class MapWidget extends React.Component {
 							<LayerGroup>
 								<TileLayer 
 								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/precipitation.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
 						</LayersControl.BaseLayer>
@@ -236,6 +242,7 @@ class MapWidget extends React.Component {
 							<LayerGroup>
 								<TileLayer 
 								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/clouds.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
 						</LayersControl.BaseLayer>
@@ -244,7 +251,7 @@ class MapWidget extends React.Component {
 								<TileLayer 
 								// PLace holders
 								opacity = {1.1}
-								attribution='<img src="logo192.png" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw);"/>'
+								attribution='<img src="Weather-Gradient-Charts/wind-speed.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
 						</LayersControl.BaseLayer>
@@ -252,7 +259,7 @@ class MapWidget extends React.Component {
 							<LayerGroup>
 								<TileLayer 
 								opacity = {1.1}
-								attribution='<img src="test.png" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw);"/>'
+								attribution='<img src="Weather-Gradient-Charts/wind-speed.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`http://maps.openweathermap.org/maps/2.0/weather/WND/{z}/{x}/{y}?date=${this.getCurrentTimestamp()}&appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 								{/* <img src="test.png" style="Legend.css"/> */}
 							</LayerGroup>
@@ -261,7 +268,7 @@ class MapWidget extends React.Component {
 							<LayerGroup>
 								<TileLayer
 								opacity = {1.1}
-								attribution='<div id="mydiv" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw); z-index: 9; background-color: #f1f1f1; text-align: center; border: 1px solid #d3d3d3;"><div id="mydivheader" style = "padding: 10px; cursor: move; z-index: 10; background-color: #2196F3; color: #fff;">Click here to move</div><img src="logo192.png" style="position: absolute; left: 0; bottom: 0; margin: 3vw calc(100% - 97vw);"/><script> dragElement(document.getElementById("mydiv"));                function dragElement(elmnt) {          var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;          if (document.getElementById(elmnt.id + "header")) { document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;          } else {elmnt.onmousedown = dragMouseDown;          }                  function dragMouseDown(e) {            e = e || window.event;            e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY; document.onmouseup = closeDragElement; document.onmousemove = elementDrag;          }                  function elementDrag(e) {            e = e || window.event;            e.preventDefault();  pos1 = pos3 - e.clientX;            pos2 = pos4 - e.clientY;            pos3 = e.clientX;            pos4 = e.clientY;   elmnt.style.top = (elmnt.offsetTop - pos2) + "px";            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";          }                  function closeDragElement() {   document.onmouseup = null;            document.onmousemove = null;          }        }        </script></div>'
+								attribution='<img src="Weather-Gradient-Charts/pressure.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
 						</LayersControl.BaseLayer>
@@ -282,11 +289,9 @@ class MapWidget extends React.Component {
 						<Popup>					
 						Temperature: {this.state.temperature+"°C"}
 						<br/>
-						Precipitation: {this.state.precipitation}
+						Precipitation: {this.state.precipitation+" mm"}
 						<br/>
 						Wind speed: {this.state.windSpeed+" km/h"}
-						<br/>
-						TO DO: add units for precip.
 						</Popup>
 					</Marker>
 				</MapContainer>
@@ -296,3 +301,4 @@ class MapWidget extends React.Component {
 }
 
 export default MapWidget;
+
