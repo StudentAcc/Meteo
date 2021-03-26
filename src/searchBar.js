@@ -3,9 +3,9 @@ import PlacesAutocomplete, {
 	geocodeByAddress,
 	getLatLng,
   } from 'react-places-autocomplete';  
-// import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 class SearchBar extends React.Component {
+	// Used as suggested in react-places-autocomplete
 	constructor(props) {
 		super(props);
 		this.state = { address: '' };
