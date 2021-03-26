@@ -2,7 +2,7 @@ import React from "react";
 import {useMap, MapConsumer, MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from "leaflet";
-import Geocode from "react-geocode";
+// import Geocode from "react-geocode";
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
@@ -69,15 +69,16 @@ class MapWidget extends React.Component {
 
 	updateWeatherData (lat,lng){
 		this.props.fetchWeatherDataAux("N/A",lat,lng)
-		this.state.location = this.props.location;
-		this.state.temperature = this.props.forecast.temp;
-		this.state.precipitation = Math.round(this.props.hourly[0].pop * 100);
-		this.state.windSpeed = Math.round(this.props.forecast.wind_speed * 3.6);
-		this.state.windDegrees = this.props.forecast.wind_deg;
-		this.state.weatherDescription = this.props.forecast.weather[0].main;
-		this.state.date = (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB");
-		this.state.daily = this.props.daily;
-		// };
+		this.setState({
+		location: this.props.location,
+		temperature: this.props.forecast.temp,
+		precipitation: Math.round(this.props.hourly[0].pop * 100),
+		windSpeed: Math.round(this.props.forecast.wind_speed * 3.6),
+		windDegrees: this.props.forecast.wind_deg,
+		weatherDescription: this.props.forecast.weather[0].main,
+		date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
+		daily: this.props.daily
+		});
 		console.log("updated weather");
 		this.mapPopup.update();
 	}
@@ -99,7 +100,7 @@ class MapWidget extends React.Component {
 			// console.log(x[i].nextElementSibling.innerHTML);
 			console.log(i);
 			console.log(x[i].style.opacity);
-		  	if (x[i].style.opacity == 1.1){
+		  	if (x[i].style.opacity === 1.1){
 				x[i].style.zIndex = 10;
 				// var map = withMyHook()
 				// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
