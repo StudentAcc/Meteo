@@ -1,8 +1,8 @@
 import React from "react";
-import {useMapEvents, MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
+import {useMap, MapConsumer, MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from "leaflet";
-// import Geocode from "react-geocode";
+import Geocode from "react-geocode";
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
@@ -10,14 +10,14 @@ import Legend from "./Legend";
 // import NavBar from './navBar';
 
 let DefaultIcon = L.icon({
-            ...L.Icon.Default.prototype.options,
-            iconUrl: icon,
-            iconRetinaUrl: iconRetina,
-            shadowUrl: iconShadow
-        });
-        L.Marker.prototype.options.icon = DefaultIcon;
+    ...L.Icon.Default.prototype.options,
+    iconUrl: icon,
+    iconRetinaUrl: iconRetina,
+    shadowUrl: iconShadow
+});
+L.Marker.prototype.options.icon = DefaultIcon;
 
-		let image = require("./test.png");
+//let image = require("./test.png");
 
 class MapWidget extends React.Component {
 
@@ -35,41 +35,51 @@ class MapWidget extends React.Component {
 	// 	this.props = this.fetchWeatherData();
 	// }
 
-	// fetchWeatherData (){
-	// 	const key = "3a272e399eccb14fac2be5eeca1b5d00";
-	// 	const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${this.props.lat}&lon=${this.props.lng}&exclude=minutely&appid=${key}&units=metric`
-	// 	fetch(forecast).then(res => res.json())
-	// 	.then((data) => {
-	// 		console.log(data);
-	// 		Geocode.fromLatLng(this.props.lat, this.props.lng).then((res) => {
-	// 			const loc = res.results[0].address_components[2].long_name;
-	// 			this.setState({
-	// 				latitude: this.props.lat,
-	// 				longitude: this.props.lng,
-	// 				location: loc,
-	// 				current: data.current,
-	// 				daily: data.daily,
-	// 				hourly: data.hourly,
-	// 				hasFetched: true});
-	// 	  		}, (err) => {
-	// 			console.log(err);
-	// 		});
-	// 	});
-	// }
-
 	constructor(props) {
 		super(props);
 		this.state = {
 			location: this.props.location,
-			temperature: this.props.current.temp,
+			temperature: this.props.forecast.temp,
 			precipitation: Math.round(this.props.hourly[0].pop * 100),
-			windSpeed: Math.round(this.props.current.wind_speed * 3.6),
-			windDegrees: this.props.current.wind_deg,
-			weatherDescription: this.props.current.weather[0].main,
-			date: (new Date(this.props.current.dt * 1000)).toLocaleDateString("en-GB"),
+			windSpeed: Math.round(this.props.forecast.wind_speed * 3.6),
+			windDegrees: this.props.forecast.wind_deg,
+			weatherDescription: this.props.forecast.weather[0].main,
+			date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
 			daily: this.props.daily,
-			hasMounted: false
+			hasMounted: false,
 		};
+		// this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
+		// this.fetchWeatherDataAux = this.fetchWeatherData.bind(this);
+	}
+
+	// updateWeatherData (lat,lng){
+	// 	this.fetchWeatherData(lat,lng) ;
+	// 	this.state = {
+	// 		location: this.state.location,
+	// 		temperature: this.state.forecast.temp,
+	// 		precipitation: Math.round(this.state.hourly[0].pop * 100),
+	// 		windSpeed: Math.round(this.state.forecast.wind_speed * 3.6),
+	// 		windDegrees: this.state.forecast.wind_deg,
+	// 		weatherDescription: this.state.forecast.weather[0].main,
+	// 		date: (new Date(this.state.forecast.dt * 1000)).toLocaleDateString("en-GB"),
+	// 		daily: this.state.daily,
+	// 		hasMounted: false
+	// 	};
+	// }
+
+	updateWeatherData (lat,lng){
+		this.props.fetchWeatherDataAux("N/A",lat,lng)
+		this.state.location = this.props.location;
+		this.state.temperature = this.props.forecast.temp;
+		this.state.precipitation = Math.round(this.props.hourly[0].pop * 100);
+		this.state.windSpeed = Math.round(this.props.forecast.wind_speed * 3.6);
+		this.state.windDegrees = this.props.forecast.wind_deg;
+		this.state.weatherDescription = this.props.forecast.weather[0].main;
+		this.state.date = (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB");
+		this.state.daily = this.props.daily;
+		// };
+		console.log("updated weather");
+		this.mapPopup.update();
 	}
 
 	getCurrentTimestamp() {
@@ -80,7 +90,47 @@ class MapWidget extends React.Component {
 		this.map.leafletElement.position.setLatLng(e.latlng)
 		console.log("clicked")
 	}
+
+	baseLayerChange = event => {
+		console.log('baseLayerChange event', event);
+		var x = document.getElementsByClassName("leaflet-layer");
+		var i;
+		for (i = 0; i < x.length; i++) {
+			// console.log(x[i].nextElementSibling.innerHTML);
+			console.log(i);
+			console.log(x[i].style.opacity);
+		  	if (x[i].style.opacity == 1.1){
+				x[i].style.zIndex = 10;
+				// var map = withMyHook()
+				// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
+		  	} else {
+				x[i].style.zIndex = 0;
+			  }
+		}
+
+		// x[1].style.zIndex = "10";
+
+		// var x = document.getElementsByClassName("leaflet-control-layers-selector");
+		// var i;
+		// for (i = 6; i < x.length; i++) {
+		// 	// console.log(x[i].nextElementSibling.innerHTML);
+		// 	console.log(event.name);
+		//   	if (x[i].nextElementSibling.innerHTML.substring(1) != event.name){
+		// 		console.log(x[i].nextElementSibling.innerHTML);
+		// 		x[i].checked = false;
+		// 		console.log(event.name)
+		// 		// var map = withMyHook()
+		// 		// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
+		//   	}
+		// }
+		// // event.layer.remove();
+	}
 	
+	whenReadyHandler = event => {
+		const { target } = event;
+		target.on('baselayerchange', this.baseLayerChange);
+	}
+
 	render() {
 		const coords = [this.props.latitude, this.props.longitude]
 		const key = "f6a4ad984d34e8c6e01aecdcce1a31c7";
@@ -94,17 +144,20 @@ class MapWidget extends React.Component {
 		return (
 			<div style = {{height: '100vh'}}>
 				{/* <NavBar></NavBar> */}
-				<MapContainer 
+				<MapContainer
 				style={{ width: '100%', height: '100%', zIndex:'0'  }}
 				center={coords} 
 				zoom={15} 
-				scrollWheelZoom={true} 
+				scrollWheelZoom={true}
+				// touchZoom={true}
+				// whenCreated={(map: L.Map} => void};
+				whenReady={this.whenReadyHandler}
 				eventHandlers={{
 					click: () => {
 					console.log('marker clicked')
 					},
 				}}>
-					<LayersControl position="topright">
+					<LayersControl position="topright" collapsed={true}>
 						<LayersControl.BaseLayer checked name="Standard">
 							<TileLayer
 							attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -116,10 +169,10 @@ class MapWidget extends React.Component {
 							url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
 							/>
 						</LayersControl.BaseLayer>
-						<LayersControl.BaseLayer name="Satelite">
+						<LayersControl.BaseLayer name="Streets">
 							<TileLayer
 							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
-							url="http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+							url="http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
 							/>
 						</LayersControl.BaseLayer>
 						<LayersControl.BaseLayer name="Terrain">
@@ -128,61 +181,105 @@ class MapWidget extends React.Component {
 							url="http://mt0.google.com/vt/lyrs=p&x={x}&y={y}&z={z}"
 							/>
 						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Satelite">
+							<TileLayer
+							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
+							url="http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"
+							/>
+						</LayersControl.BaseLayer>
 						<LayersControl.BaseLayer name="Hybrid">
 							<TileLayer
 							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
 							url="http://mt0.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}"
 							/>
-						<LayersControl.BaseLayer name="Streets">
-							<TileLayer
-							attribution='&copy; <a href="www.google.com">Google Maps</a> contributors'
-							url="http://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
-							/>
 						</LayersControl.BaseLayer>
+					</LayersControl>
+					<LayersControl position="topright" collapsed={true}>
+						<LayersControl.BaseLayer name="None" checked>
+							<LayerGroup>
+							</LayerGroup>
 						</LayersControl.BaseLayer>
-						<LayersControl.Overlay name="Temperature">
-							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
-							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Precipitation">
-							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
-							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Clouds">
-							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
-							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Wind speed">
-							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
-							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Wind speed - with direction">
+						<LayersControl.BaseLayer name="Temperature">
 							<LayerGroup>
 								<TileLayer 
-								// attribution='<img src="https://i.stack.imgur.com/2Ty62.png" style="position: absolute; left: 0px; bottom: 0px;")/>'
-								url={`http://maps.openweathermap.org/maps/2.0/weather/WND/{z}/{x}/{y}?date=${this.getCurrentTimestamp()}&appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
-								{/* <Legend></Legend> */}
+								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/temperature.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
+								url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
-						</LayersControl.Overlay>
-						<LayersControl.Overlay name="Sea level pressure">
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Precipitation">
 							<LayerGroup>
-								<TileLayer url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+								<TileLayer 
+								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/precipitation.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
+								url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
 							</LayerGroup>
-						</LayersControl.Overlay>
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Clouds">
+							<LayerGroup>
+								<TileLayer 
+								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/clouds.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
+								url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+							</LayerGroup>
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Wind speed">
+							<LayerGroup>
+								<TileLayer 
+								// PLace holders
+								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/wind-speed.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
+								url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+							</LayerGroup>
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Wind speed - with direction">
+							<LayerGroup>
+								<TileLayer 
+								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/wind-speed.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
+								url={`http://maps.openweathermap.org/maps/2.0/weather/WND/{z}/{x}/{y}?date=${this.getCurrentTimestamp()}&appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+								{/* <img src="test.png" style="Legend.css"/> */}
+							</LayerGroup>
+						</LayersControl.BaseLayer>
+						<LayersControl.BaseLayer name="Sea level pressure">
+							<LayerGroup>
+								<TileLayer
+								opacity = {1.1}
+								attribution='<img src="Weather-Gradient-Charts/pressure.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
+								url={`https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
+							</LayerGroup>
+						</LayersControl.BaseLayer>
 					</LayersControl>
-					<Marker ref={(ref) => { this.mapMarker = ref; }} position={coords}>
-						<Popup>					
-						Temperature: {this.state.temperature+"°C"}
-						<br/>
-						Precipitation: {this.state.precipitation}
-						<br/>
-						Wind speed: {this.state.windSpeed+" km/h"}
-						<br/>
-						TO DO: add units for precip.
+					<Marker ref={(ref) => { this.mapMarker = ref; }} position={coords} draggable = {true} eventHandlers={{
+						dragend: (e) => {
+							var coords = this.mapMarker.getLatLng();
+							console.log('marker moved'+coords);
+							this.setState ({
+								lat: coords.lat,
+								lng: coords.lng
+							})
+							// console.log(this.state.lat);
+							// console.log(this.state.lng);
+							// Geocode.setLocationType("ROOFTOP");
+							// Geocode.setApiKey("AIzaSyAZOPHHp7iiz1Y9dAcsLxU86qSKvWEsWFk");
+							// Geocode.fromLatLng(this.state.lat,this.state.lng).then((res) => {
+							// 	address = res.results[0].formatted_address;
+							// 	console.log(address);
+							// 	this.props.handleSubmit(address);
+							// }, (err) => {
+							// 	console.log(err);
+							// });
+							this.updateWeatherData(this.state.lat, this.state.lng);
+							//console.log(address);
+							// var address = `https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=${key}`;
+							// App.fetchWeatherData()
+						}}}>
+						<Popup ref={(ref) => { this.mapPopup = ref; }} >
+							Temperature: { this.state.temperature+"°C"};
+							<br/>
+							Precipitation: {this.state.precipitation+" mm/h"};
+							<br/>
+							Wind speed: {this.state.windSpeed+" km/h"};
 						</Popup>
 					</Marker>
 				</MapContainer>
@@ -192,3 +289,4 @@ class MapWidget extends React.Component {
 }
 
 export default MapWidget;
+
