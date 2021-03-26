@@ -98,17 +98,17 @@ class App extends React.Component {
                handleForecastChange={this.handleForecastChange}/>
               </Route>
             <Route exact path="/temperature">
-              <WeatherWidgetMain daa={data} 
+              <WeatherWidgetMain weatherData={data} 
                location={this.state.location} 
                type="Temperature"/>
             </Route>
             <Route exact path="/precipitation">
-              <WeatherWidgetMain daa={data}
+              <WeatherWidgetMain weatherData={data}
                location={this.state.location} 
                type="Precipitation"/>
             </Route>
             <Route exact path="/wind">
-              <WeatherWidgetMain daa={data}
+              <WeatherWidgetMain weatherData={data}
                location={this.state.location} 
                type="Wind"/>
             </Route>
