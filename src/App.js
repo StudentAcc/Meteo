@@ -25,61 +25,52 @@ class App extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleForecastChange = this.handleForecastChange.bind(this);
   }
+
   fetchWeatherData() {
 		if (navigator.geolocation) {
 		  navigator.geolocation.getCurrentPosition((position) => {
 			const lat = position.coords.latitude;
-			const lon = position.coords.longitude;
-			const key = "3a272e399eccb14fac2be5eeca1b5d00";
-			const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${key}&units=metric`
-			fetch(forecast).then(res => res.json())
-			.then((data) => {
-			  console.log(data);
-			  Geocode.fromLatLng(lat, lon).then((res) => {
-          const loc = res.results[0].address_components[2].long_name;
-          this.setState({
-            latitude: lat,
-            longitude: lon,
-            location: loc,
-            forecast: data.hourly[0],
-            daily: data.daily,
-            hourly: data.hourly,
-            hasFetched: true
-          });
-			  }, (err) => {
-				console.log(err);
-			  });
+			const lng = position.coords.longitude;
+			Geocode.fromLatLng(lat, lng).then((res) => {
+        const location = res.results[0].address_components[2].long_name;
+        this.fetchWeatherDataAux(location,lat,lng);
 			}, (err) => {
 			  console.log(err); 
 			});
 		  });
 		}
 	}
+
+  fetchWeatherDataAux = (location,lat,lng) => {
+    const key = "3a272e399eccb14fac2be5eeca1b5d00";
+    const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely&appid=${key}&units=metric`
+    fetch(forecast).then(res => res.json())
+    .then((data) => {
+    console.log(data);
+    this.setState({
+        latitude: lat,
+        longitude: lng,
+        location: location,
+        forecast: data.hourly[0],
+        daily: data.daily,
+        hourly: data.hourly,
+        hasFetched: true
+      });
+    }, (err) => {
+    console.log(err); 
+    });
+  }
+
   handleSubmit(address) {
 		const location = address;
 		Geocode.fromAddress(location).then((res) => {
 		  const {lat, lng} = res.results[0].geometry.location;
-		  const key = "3a272e399eccb14fac2be5eeca1b5d00";
-		  const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely&appid=${key}&units=metric`
-		  fetch(forecast).then(res => res.json())
-		  .then((data) => {
-			console.log(data);
-			this.setState({
-          latitude: lat,
-          longitude: lng,
-          location: location,
-          forecast: data.hourly[0],
-          daily: data.daily,
-          hourly: data.hourly
-        });
-		  }, (err) => {
-			console.log(err); 
-		  });
+      this.fetchWeatherDataAux(location,lat,lng);
 		}, (err) => {
 		  console.log(err);
 	   });
-	  }
-    handleForecastChange(e) {
+	}
+  handleForecastChange(e) {
       e.preventDefault();
       if (e.target.id === 'Today') {
         this.setState({
@@ -130,7 +121,7 @@ class App extends React.Component {
                type="Wind"/>
             </Route>
             <Route exact path="/map">
-            <MapWidget {...this.state}/>
+            <MapWidget {...this.state} fetchWeatherDataAux={this.fetchWeatherDataAux}/>
             </Route>
             <Redirect from="*" to="/"/>
             </Switch>

@@ -7,8 +7,6 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import Legend from "./Legend";
-import App from "./App";
-import {withMyHook} from "./MyComponent"
 // import NavBar from './navBar';
 
 let DefaultIcon = L.icon({
@@ -48,32 +46,10 @@ class MapWidget extends React.Component {
 			weatherDescription: this.props.forecast.weather[0].main,
 			date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
 			daily: this.props.daily,
-			hasMounted: false
+			hasMounted: false,
 		};
 		// this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
 		// this.fetchWeatherDataAux = this.fetchWeatherData.bind(this);
-	}
-
-	fetchWeatherData (lat,lng){
-		const key = "3a272e399eccb14fac2be5eeca1b5d00";
-		const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely&appid=${key}&units=metric`
-		fetch(forecast).then(res => res.json())
-		.then((data) => {
-			console.log(data);
-			Geocode.fromLatLng(this.state.lat, this.state.lng).then((res) => {
-				const loc = res.results[0].address_components[2].long_name;
-				this.setState({
-					latitude: this.state.lat,
-					longitude: this.state.lng,
-					location: loc,
-					forecast: data.hourly[0],
-					daily: data.daily,
-					hourly: data.hourly,
-					hasFetched: true});
-		  		}, (err) => {
-				console.log(err);
-			});
-		});
 	}
 
 	// updateWeatherData (lat,lng){
@@ -92,18 +68,18 @@ class MapWidget extends React.Component {
 	// }
 
 	updateWeatherData (lat,lng){
-		this.fetchWeatherData(lat,lng) ;
-		this.state = {
-			location: this.state.location,
-			temperature: this.state.forecast.temp,
-			precipitation: Math.round(this.state.hourly[0].pop * 100),
-			windSpeed: Math.round(this.state.forecast.wind_speed * 3.6),
-			windDegrees: this.state.forecast.wind_deg,
-			weatherDescription: this.state.forecast.weather[0].main,
-			date: (new Date(this.state.forecast.dt * 1000)).toLocaleDateString("en-GB"),
-			daily: this.state.daily,
-			hasMounted: false
-		};
+		this.props.fetchWeatherDataAux("N/A",lat,lng)
+		this.state.location = this.props.location;
+		this.state.temperature = this.props.forecast.temp;
+		this.state.precipitation = Math.round(this.props.hourly[0].pop * 100);
+		this.state.windSpeed = Math.round(this.props.forecast.wind_speed * 3.6);
+		this.state.windDegrees = this.props.forecast.wind_deg;
+		this.state.weatherDescription = this.props.forecast.weather[0].main;
+		this.state.date = (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB");
+		this.state.daily = this.props.daily;
+		// };
+		console.log("updated weather");
+		this.mapPopup.update();
 	}
 
 	getCurrentTimestamp() {
@@ -173,6 +149,7 @@ class MapWidget extends React.Component {
 				center={coords} 
 				zoom={15} 
 				scrollWheelZoom={true}
+				// touchZoom={true}
 				// whenCreated={(map: L.Map} => void};
 				whenReady={this.whenReadyHandler}
 				eventHandlers={{
@@ -275,23 +252,34 @@ class MapWidget extends React.Component {
 					</LayersControl>
 					<Marker ref={(ref) => { this.mapMarker = ref; }} position={coords} draggable = {true} eventHandlers={{
 						dragend: (e) => {
-							var temp = this.mapMarker.getLatLng();
-							console.log('marker moved'+this.mapMarker.getLatLng())
+							var coords = this.mapMarker.getLatLng();
+							console.log('marker moved'+coords);
 							this.setState ({
-								lat: temp.lat,
-								lng: temp.lng
+								lat: coords.lat,
+								lng: coords.lng
 							})
-							console.log(this.state.lat)
-							console.log(this.state.lng)
-							this.updateWeatherData(this.state.lat,this.state.lng)
+							// console.log(this.state.lat);
+							// console.log(this.state.lng);
+							// Geocode.setLocationType("ROOFTOP");
+							// Geocode.setApiKey("AIzaSyAZOPHHp7iiz1Y9dAcsLxU86qSKvWEsWFk");
+							// Geocode.fromLatLng(this.state.lat,this.state.lng).then((res) => {
+							// 	address = res.results[0].formatted_address;
+							// 	console.log(address);
+							// 	this.props.handleSubmit(address);
+							// }, (err) => {
+							// 	console.log(err);
+							// });
+							this.updateWeatherData(this.state.lat, this.state.lng);
+							//console.log(address);
+							// var address = `https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=${key}`;
 							// App.fetchWeatherData()
 						}}}>
-						<Popup>					
-						Temperature: {this.state.temperature+"°C"}
-						<br/>
-						Precipitation: {this.state.precipitation+" mm"}
-						<br/>
-						Wind speed: {this.state.windSpeed+" km/h"}
+						<Popup ref={(ref) => { this.mapPopup = ref; }} >
+							Temperature: { this.state.temperature+"°C"};
+							<br/>
+							Precipitation: {this.state.precipitation+" mm/h"};
+							<br/>
+							Wind speed: {this.state.windSpeed+" km/h"};
 						</Popup>
 					</Marker>
 				</MapContainer>
