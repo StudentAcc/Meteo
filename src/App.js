@@ -12,8 +12,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       value: '',
-      latitude: null,
-      longitude: null,
+      latitude: undefined,
+      longitude: undefined,
       location: '',
       forecast: {},
       daily: [],
@@ -25,39 +25,30 @@ class App extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleForecastChange = this.handleForecastChange.bind(this);
   }
-  fetchWeatherData() {
-		if (navigator.geolocation) {
-		  navigator.geolocation.getCurrentPosition((position) => {
-			const lat = position.coords.latitude;
-			const lon = position.coords.longitude;
+  fetchWeatherData(latitude, longitude) {
 			const key = "3a272e399eccb14fac2be5eeca1b5d00";
-			const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${key}&units=metric`
+			const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid=${key}&units=metric`
 			fetch(forecast).then(res => res.json())
 			.then((data) => {
 			  console.log(data);
-			  Geocode.fromLatLng(lat, lon).then((res) => {
+			  Geocode.fromLatLng(latitude, longitude).then((res) => {
           const loc = res.results[0].address_components[2].long_name;
           this.setState({
-            latitude: lat,
-            longitude: lon,
+            latitude: latitude,
+            longitude: longitude,
             location: loc,
             forecast: data.hourly[0],
             daily: data.daily,
             hourly: data.hourly,
             hasFetched: true
-          });
-			  }, (err) => {
-				console.log(err);
-			  });
-			}, (err) => {
-			  console.log(err); 
-			});
-		  });
-		}
-	}
+            });
+			    })
+          .catch(err => console.error(err))
+  		})
+    .catch(err => console.error(err))
+  }
   handleSubmit(address) {
-		const location = address;
-		Geocode.fromAddress(location).then((res) => {
+		Geocode.fromAddress(address).then((res) => {
 		  const {lat, lng} = res.results[0].geometry.location;
 		  const key = "3a272e399eccb14fac2be5eeca1b5d00";
 		  const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely&appid=${key}&units=metric`
@@ -67,44 +58,41 @@ class App extends React.Component {
 			this.setState({
           latitude: lat,
           longitude: lng,
-          location: location,
+          location: address,
           forecast: data.hourly[0],
           daily: data.daily,
           hourly: data.hourly
         });
-		  }, (err) => {
-			console.log(err); 
-		  });
-		}, (err) => {
-		  console.log(err);
-	   });
-	  }
+		  })
+      .catch(err => console.error(err))
+	   })
+    .catch(err => console.error(err))
+	}
     handleForecastChange(e) {
       e.preventDefault();
-      if (e.target.id === 'Today') {
-        this.setState({
-         forecast: this.state.hourly[0]
-        }); 
-      } else if (e.target.id === 'Tomorrow') {
-        this.setState({
-          forecast: this.state.hourly[24]
+      if (e.target.id === 'Today') 
+        this.setState({forecast: this.state.hourly[0]}); 
+      else if (e.target.id === 'Tomorrow') 
+        this.setState({forecast: this.state.hourly[24]});
+  }
+  componentDidMount() {
+    if (navigator.geolocation) {
+		  navigator.geolocation.getCurrentPosition((position) => {
+        const {latitude, longitude} = position.coords;
+        this.fetchWeatherData(latitude, longitude);
       });
     }
   }
-  componentDidMount() {
-    this.fetchWeatherData();
-  }
   componentDidUpdate() {
     const { hasFetched } = this.state;
-    if (hasFetched) {
+    if (hasFetched) 
       document.body.style.backgroundImage = weatherBackground[this.state.forecast.weather[0].main].backgroundImage;
-    }
   }
   render() {
     const { hasFetched } = this.state;
-    if (!hasFetched) {
+    if (!hasFetched) 
       return <h1> Please wait </h1>
-    }
+    const data = [{hourly: this.state.hourly},{daily:this.state.daily}]
     return (
         <Router>
           <Switch>
@@ -115,17 +103,17 @@ class App extends React.Component {
                handleForecastChange={this.handleForecastChange}/>
               </Route>
             <Route exact path="/temperature">
-              <WeatherWidgetMain {...this.state.hourly} 
+              <WeatherWidgetMain daa={data} 
                location={this.state.location} 
                type="Temperature"/>
             </Route>
             <Route exact path="/precipitation">
-              <WeatherWidgetMain {...this.state.hourly} 
+              <WeatherWidgetMain daa={data}
                location={this.state.location} 
                type="Precipitation"/>
             </Route>
             <Route exact path="/wind">
-              <WeatherWidgetMain {...this.state.hourly} 
+              <WeatherWidgetMain daa={data}
                location={this.state.location} 
                type="Wind"/>
             </Route>
