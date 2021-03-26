@@ -75,7 +75,7 @@ class WeatherChart extends React.Component {
 						 x={this.getSVGX(coord.x+0.05)} y={4-this.getSVGY(coord.y+1)}> {Math.round(coord.y)+"%"} </text>
 						<polyline stroke="#ffffff" stroke-width="1"
 						 points={this.getSVGX(coord.x)+","+this.getSVGY(coord.y)+" "+this.getSVGX(coord.x+0.25)+","+this.getSVGY(coord.y)}/> */}
-						<rect fill="#e4ecef" fillOpacity="0.3" transform={`translate(-16 1) rotate(180 ${this.getSVGX(coord.x)} ${this.getSVGY(20)})`} style={{transition: "0.5s all"}}
+						<rect fill="#e4ecef" fillOpacity="0.3" transform={`translate(40 -2) rotate(180 ${this.getSVGX(coord.x)} ${this.getSVGY(20)})`} style={{transition: "0.5s all"}}
 						 x = {this.getSVGX(coord.x)} y = {this.getSVGY(34)} 
 						 width='20px' height={coord.y+"px"}/>
 					</>
@@ -143,7 +143,7 @@ class WeatherChart extends React.Component {
 		const {svgHeight, svgWidth} = this.state;
 		return (
 			<>
-			  <svg style={{margin: "5%"}} viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
+			  <svg style={styles.svg} viewBox={`0 0 ${svgWidth} ${svgHeight}`}>
 				{this.state.type === "Temperature" && this.drawSVGPolygon()}				
 				{this.state.type === "Precipitation" && this.drawSVGBars()}	
 				{this.state.type === "Wind" && this.drawWindChart()}
@@ -154,4 +154,11 @@ class WeatherChart extends React.Component {
 	}
 }
 
+let styles = {
+	svg: {
+		margin: "5%",
+		position: "absolute",
+		top: "50%",
+	}
+}
 export default WeatherChart;
