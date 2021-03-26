@@ -18,10 +18,15 @@ class Header extends React.Component {
 		this.updateSelected(e.target.id);
 		this.props.handleForecastChange(e);		
 		e.target.style.textDecoration = 'underline';
+		const listItems = document.getElementsByClassName("headerList")[0].childNodes;		console.log(listItems);
+		listItems.forEach((item) => {
+			if (item.id !== e.target.id) 
+				item.style.textDecoration = 'none';
+		});
 	}
 	render() {
 		return (
-			<ul style={styles.ul}>
+			<ul className="headerList" style={styles.ul}>
 				<li id="Today" onClick={(e) => {this.handleClick(e);}} style={styles.li}> Today </li>
 				<li id="Tomorrow" onClick={(e) => {this.handleClick(e);}} style={styles.li}> Tomorrow </li>
 				<li id="1 Week" onClick={(e) => {this.handleClick(e);}} style={styles.li}> 1 Week </li>
