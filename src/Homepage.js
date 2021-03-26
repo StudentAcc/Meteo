@@ -18,9 +18,8 @@ class Homepage extends React.Component {
 	  }
 	  render() {
 		  const { hasMounted } = this.state;
-		  if (!hasMounted) {
+		  if (!hasMounted) 
 			return <h1> Please wait </h1>
-		  }
 		return(
 			<main>
 				<NavBar currentLocation={this.props.location} handleInput={this.props.handleChange} handleSubmit={this.props.handleSubmit}> </NavBar>
