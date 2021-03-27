@@ -1,14 +1,4 @@
-.hamburguerMenu {
-	position: relative;
-	width: 100%;
-	border-bottom: 1px white solid;
-}
-.bars {
-	font-size: 30px;
-	color: white;
-}
-
-.fa {
-	font-size: 30px;
-	color: white;
+.bars, .fa {
+	font-size: 25px;
+	color: #4f4f4f;
 }
