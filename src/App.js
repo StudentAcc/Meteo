@@ -113,7 +113,7 @@ class App extends React.Component {
                type="Wind"/>
             </Route>
             <Route exact path="/map">
-            <MapWidget {...this.state} fetchWeatherDataAux={this.fetchWeatherDataAux}/>
+              <MapWidget {...this.state} fetchWeatherData={this.fetchWeatherData}/>
             </Route>
             <Redirect from="*" to="/"/>
             </Switch>
