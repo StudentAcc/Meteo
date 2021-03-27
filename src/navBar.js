@@ -1,38 +1,90 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./searchBar";
 import { BrowserRouter as Router, /*Route, Switch*/ } from "react-router-dom";
-import { faHome, faGlobeEurope } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faGlobeEurope, faPlus, faSearch,faTimes} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { useMediaQuery } from 'react-responsive'
+import "./navBar.css";
 
-class NavBar extends React.Component {
-	render() {
-	  return (
-		  <Router>
-			<nav className="navBar" style={styles.container}>
-				<p style={styles.appName}> Meteo </p>
-				<ul style={styles.ul}>
-					<li style={styles.li}>
-						<Link style={styles.link} to="/"> 
-							<FontAwesomeIcon style={styles.fa} icon={faHome}/> 
-						</Link>
-					</li>
-					<li style={styles.li}>
-						<Link style={styles.link} to="/map"> 
-							<FontAwesomeIcon style={styles.fa}  icon={faGlobeEurope}/> 
-						</Link>
-					</li>
-				</ul>
-				{/* <Switch>
-					<Route path="/:currentLocation" component={App}/>
-					<Route path="/satellite" component={Satellite}/>
-					<Route path="/world" component={World}/>
-				</Switch> */}
-				<SearchBar handleInput={this.props.handleInput} handleSubmit={this.props.handleSubmit}/>
-		</nav>
-		</Router>
-		)
+
+const Menu = ({handleSubmit, handleInput}) => {
+	return (
+	<nav className="navBar" style={styles.container}>
+		<p style={styles.appName}> Meteo </p>
+		<ul style={styles.ul}>
+			<li style={styles.li}>
+				<Link style={styles.link} to="/"> 
+					<FontAwesomeIcon style={styles.fa} icon={faHome}/> 
+				</Link>
+			</li>
+			<li style={styles.li}>
+				<Link style={styles.link} to="/map"> 
+					<FontAwesomeIcon style={styles.fa}  icon={faGlobeEurope}/> 
+				</Link>
+			</li>
+		</ul>
+		<SearchBar styles={styles} handleInput={handleInput} handleSubmit={handleSubmit}/>
+	</nav>
+	)
+}
+
+const TabletMenu = ({handleSubmit, handleInput}) => {
+	const [hasClicked, setHasClicked] = useState(false);
+	const search = (e) => {
+		setHasClicked(!hasClicked);
 	}
+	return (
+		<ul style={styles.ul}>
+			<li style={styles.tabletListItem}>
+				<Link style={styles.link} to="/"> 
+					<FontAwesomeIcon className="fa" icon={faHome}/> 
+				</Link>
+			</li>
+			<li style={styles.tabletListItem}>
+				<Link style={styles.link} to="/map"> 
+					<FontAwesomeIcon className="fa" icon={faGlobeEurope}/> 
+				</Link>
+			</li>
+			<li style={styles.tabletListItem}>
+				<div style={{width: "100%"}}>
+				<FontAwesomeIcon onClick={search} className="fa" icon={faSearch}/> 
+				{hasClicked && <SearchBar handleInput={handleInput} handleSubmit={handleSubmit}/>}
+				</div>
+			</li>
+		</ul>
+	)
+}
+
+const NavBar = ({handleInput, handleSubmit}) => {
+	const [hasClicked, setHasClicked] = useState(false);
+	const [icons, setIcon] = useState(faPlus);
+
+	const isDesktopOrLaptop = useMediaQuery({query: '(min-device-width: 1224px)'})
+	const isTabletOrMobileDevice = useMediaQuery({query: '(max-device-width: 1224px)'})
+	const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+	
+	const showOptions = (e) => {
+		!hasClicked ? setIcon(faTimes) : setIcon(faPlus)
+		setHasClicked(!hasClicked);
+	}
+	return (
+		<Router>
+			<div className="menu">
+			{isDesktopOrLaptop && 
+				<Menu handleInput={handleInput} handleSubmit={handleSubmit}/>
+			}
+			{isTabletOrMobileDevice && 
+				<div className="hamburguerMenu">
+					<ul style={styles.menuList}>
+						<li> <FontAwesomeIcon onClick={showOptions} className="bars" icon={icons}/> </li>
+						<li style={styles.menuListItem}> {hasClicked && <TabletMenu handleInput={handleInput} handleSubmit={handleSubmit}/>} </li>
+					</ul>
+				</div>
+			}
+			</div>
+	</Router>
+	)
 }
 
 let styles = {
@@ -52,6 +104,17 @@ let styles = {
 	},
 	link: {
 		textDecoration: 'none',
+	},
+	menuList: {
+		listStyleType: 'none',
+		display: 'flex',
+	},
+	menuListItem: {
+		width: '80%',
+	},
+	tabletListItem: {
+		marginLeft: "30px",
+		width: '5%',
 	},
 	ul: {
 		listStyleType: 'none',
