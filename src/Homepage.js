@@ -5,38 +5,24 @@ import Header from './header';
 import { Link } from "react-router-dom";
 import "./Homepage.css";
 
-class Homepage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			hasMounted: false
-		}
-	}
-	 componentDidMount() {
-		  this.setState({hasMounted: true});
-	  }
-	  render() {
-		  const { hasMounted } = this.state;
-		  if (!hasMounted) 
-			return <h1> Please wait </h1>
+const Homepage = ({location, handleChange, handleSubmit, handleForecastChange, temp, pop, wind_speed}) => {
 		return(
 			<main>
-				<NavBar currentLocation={this.props.location} handleInput={this.props.handleChange} handleSubmit={this.props.handleSubmit}> </NavBar>
-				<Header currentLocation={this.props.location} handleForecastChange={this.props.handleForecastChange}></Header>
+				<NavBar currentLocation={location} handleInput={handleChange} handleSubmit={handleSubmit}/>
+				<Header currentLocation={location} handleForecastChange={handleForecastChange}/>
 				<div className="widgetsContainer" style={styles.widgetsContainer}>
 					<Link to="/temperature">
-						<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={this.props.temp}/>
+						<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={temp}/>
 					</Link>
 					<Link to="/precipitation">
-						<WeatherWidget className="widgetPrec" style={styles.widgetPrec} name="Precipitation" value={Math.round(this.props.pop * 100)}/>
+						<WeatherWidget className="widgetPrec" style={styles.widgetPrec} name="Precipitation" value={Math.round(pop * 100)}/>
 					</Link>
 					<Link to="/wind">
-						<WeatherWidget className="widgetWind" style={styles.widgetWind} name="Wind" value={Math.round(this.props.wind_speed * 3.6)+" km/h"}/>
+						<WeatherWidget className="widgetWind" style={styles.widgetWind} name="Wind" value={Math.round(wind_speed * 3.6)+" km/h"}/>
 					</Link>
 				</div>
 			</main>
 		);
-	}
 }
 
 

@@ -4,7 +4,7 @@ import PlacesAutocomplete, {
 	getLatLng,
   } from 'react-places-autocomplete';  
 
-  import {useMediaQuery} from "react-responsive"
+import {useMediaQuery} from "react-responsive"
 
 const SearchBar = ({handleSubmit}) => {
 	// Adapted from react-places-autocomplete
