@@ -18,6 +18,7 @@
 }
 
 .data {
+	/* position: absolute; */
 	text-align: center;
 }
 
@@ -28,21 +29,21 @@ p {
 .pvalue {
 	position: relative;
 	margin-top: 40%;
-	font-size: 40px;
+	font-size: 4vw;
 }
 
 .Temperature {
-	font-size: 20px;
+	font-size: 2vw;
 	position: relative;
 	margin-top: 24%;
 }
 
 .Wind {
-	font-size: 20px;
+	font-size: 2vw;
 	position: relative;
 	margin-top: 24%;
 }
 
 .Precipitation {
-	font-size: 20px;
+	font-size: 2vw;
 }
