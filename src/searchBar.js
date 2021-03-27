@@ -10,8 +10,8 @@ const SearchBar = ({handleSubmit}) => {
 	// Adapted from react-places-autocomplete
 	const [address, setAddress] = useState('');
 
-	const isDesktopOrLaptop = useMediaQuery({query: '(min-device-width: 1224px)'})
-	const isTabletOrMobileDevice = useMediaQuery({query: '(max-device-width: 1224px)'})
+	const isDesktop = useMediaQuery({query: '(min-width: 1224px)'})
+	const isTabletOrMobile = useMediaQuery({query: '(max-width: 1223px)'})
 	
 	const handleChange = (address) => {
 		setAddress(address);
@@ -35,14 +35,14 @@ const SearchBar = ({handleSubmit}) => {
 			outline: 'none'
 		}
 	}
-	if (isDesktopOrLaptop) {
+	if (isDesktop) {
 		styles.div = {
 				display: 'inline-block',
 				position: 'absolute',
 				top: '30px',
 				right: '30px'
 		}
-	} else if (isTabletOrMobileDevice) {
+	} else if (isTabletOrMobile) {
 		styles.div = {
 			width: "85%",
 			display: 'inline-block',

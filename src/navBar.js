@@ -60,8 +60,8 @@ const NavBar = ({handleInput, handleSubmit}) => {
 	const [hasClicked, setHasClicked] = useState(false);
 	const [icons, setIcon] = useState(faPlus);
 
-	const isDesktopOrLaptop = useMediaQuery({query: '(min-device-width: 1224px)'})
-	const isTabletOrMobileDevice = useMediaQuery({query: '(max-device-width: 1224px)'})
+	const isDesktop = useMediaQuery({ query: '(min-width: 1224px)' })
+	const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1223px)' })
 	const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 	
 	const showOptions = (e) => {
@@ -71,17 +71,17 @@ const NavBar = ({handleInput, handleSubmit}) => {
 	return (
 		<Router>
 			<div className="menu">
-			{isDesktopOrLaptop && 
-				<Menu handleInput={handleInput} handleSubmit={handleSubmit}/>
-			}
-			{isTabletOrMobileDevice && 
-				<div className="hamburguerMenu">
+				{isDesktop &&  <Menu handleInput={handleInput} handleSubmit={handleSubmit}/>}
+				{isTabletOrMobile && 
+					<div className="hamburguerMenu">
 					<ul style={styles.menuList}>
 						<li> <FontAwesomeIcon onClick={showOptions} className="bars" icon={icons}/> </li>
-						<li style={styles.menuListItem}> {hasClicked && <TabletMenu handleInput={handleInput} handleSubmit={handleSubmit}/>} </li>
+						<li style={styles.menuListItem}> 
+							{hasClicked && <TabletMenu handleInput={handleInput} handleSubmit={handleSubmit}/>} 
+						</li>
 					</ul>
 				</div>
-			}
+				}
 			</div>
 	</Router>
 	)
