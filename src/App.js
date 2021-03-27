@@ -33,18 +33,31 @@ class App extends React.Component {
 			.then((data) => {
 			  console.log(data);
 			  Geocode.fromLatLng(lat, lng).then((res) => {
-          const loc = res.results[0].address_components[2].long_name;
-          this.setState({
-            latitude: lat,
-            longitude: lng,
-            location: loc,
-            forecast: data.hourly[0],
-            daily: data.daily,
-            hourly: data.hourly,
-            hasFetched: true
-            });
+          console.log(res)
+
+          try{
+            var loc = res.results[0].address_components[2].long_name; 
+          } catch(err) {
+            console.error(err);
+            var loc = "Not Available"
+          } finally {
+            this.setState({
+              location: loc,
+              });
+          } 
 			    })
           .catch(err => console.error(err))
+          // .catch(err => console.error(err); var loc = "Not Available";)
+          // .finally( fin => {this.setState({location: loc});});
+
+        this.setState({
+          latitude: lat,
+          longitude: lng,
+          forecast: data.hourly[0],
+          daily: data.daily,
+          hourly: data.hourly,
+          hasFetched: true
+        });
   		})
     .catch(err => console.error(err))
   }

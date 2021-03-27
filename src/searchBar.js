@@ -35,7 +35,8 @@ const SearchBar = ({handleSubmit}) => {
 			float: 'right',
 			borderRadius: '5px',
 			padding: '10px 0px 10px 0px',
-			outline: 'none'
+			outline: 'none',
+			zIndex: "10000"
 		}
 	}
 	if (isDesktop) {
@@ -43,7 +44,8 @@ const SearchBar = ({handleSubmit}) => {
 				display: 'inline-block',
 				position: 'absolute',
 				top: '30px',
-				right: '30px'
+				right: '30px',
+				zIndex: "10000"
 		}
 	} else if (isTabletOrMobile) {
 		styles.div = {
@@ -52,6 +54,7 @@ const SearchBar = ({handleSubmit}) => {
 			position: 'absolute',
 			top: '0px',
 			right: '10px',
+			zIndex: "10000"
 		}
 		styles.input.width = "100%"
 	}
@@ -60,6 +63,7 @@ const SearchBar = ({handleSubmit}) => {
 			value={address}
 			onChange={handleChange}
 			onSelect={handleSelect}
+			style = {{zIndex: 10000}}
 		  >
 			{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 			  <div style={styles.div}>

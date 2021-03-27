@@ -46,7 +46,8 @@ class MapWidget extends React.Component {
 			weatherDescription: this.props.forecast.weather[0].main,
 			date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
 			daily: this.props.daily,
-			hasMounted: false
+			hasMounted: false,
+			map: null
 		};
 		// this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
 		// this.fetchWeatherDataAux = this.fetchWeatherData.bind(this);
@@ -70,6 +71,8 @@ class MapWidget extends React.Component {
 	updateWeatherData = (address,lat,lng) => {
 		var newLatLng = new L.LatLng(lat, lng);
 		this.mapMarker.setLatLng(newLatLng);
+		const {map} = this.state;
+		map.flyTo(newLatLng);
 		this.props.fetchWeatherData("N/A",lat,lng);
 		this.setState({
 			location: this.props.location,
@@ -158,6 +161,7 @@ class MapWidget extends React.Component {
 				// touchZoom={true}
 				// whenCreated={(map: L.Map} => void};
 				whenReady={this.whenReadyHandler}
+				whenCreated={map => this.setState({ map })}
 				eventHandlers={{
 					click: () => {
 						console.log('marker clicked')
