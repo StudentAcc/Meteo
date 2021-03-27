@@ -31,9 +31,7 @@ const Menu = ({handleSubmit, handleInput}) => {
 
 const TabletMenu = ({handleSubmit, handleInput}) => {
 	const [hasClicked, setHasClicked] = useState(false);
-	const search = (e) => {
-		setHasClicked(!hasClicked);
-	}
+	const search = (e) => setHasClicked(!hasClicked);
 	return (
 		<ul style={styles.ul}>
 			<li style={styles.tabletListItem}>
