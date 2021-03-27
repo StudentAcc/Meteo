@@ -5,30 +5,28 @@ import './weatherWidget.css';
 import "./weather_icons/css/weather-icons.css";
 import "./weather_icons/css/weather-icons-wind.css";
 
-class WeatherWidget extends React.Component {
-	renderWidgetType() {
-		if (this.props.name === 'Precipitation') 
-			return <CircularProgressbar styles={styles.meter} value={this.props.value} text={`${this.props.value}%`}/>
-		else if (this.props.name === "Temperature")
-			return <p className="pvalue"> {this.props.value} <i className="wi wi-celsius"></i></p>
-		return <p className="pvalue"> {this.props.value} </p>
+const WeatherWidget = ({name, value, style}) => {
+	const renderWidgetType = () => {
+		if (name === 'Precipitation') 
+			return <CircularProgressbar styles={_styles.meter} value={value} text={`${value}%`}/>
+		else if (name === "Temperature")
+			return <p className="pvalue"> {value} <i className="wi wi-celsius"></i></p>
+		return <p className="pvalue"> {value} </p>
 
 	}
-	render() {
-		return (
-			<div className="container" style={this.props.style.container}>
-				<div className="widget">
-					<div className="data">
-						{this.renderWidgetType()}
-						<p className={this.props.name}> {this.props.name}</p>
-					</div>
+	return (
+		<div className="container" style={style.container}>
+			<div className="widget">
+				<div className="data">
+					{renderWidgetType()}
+					<p className={name}> {name}</p>
 				</div>
 			</div>
-		);
-	}
+		</div>
+	);
 }
 
-let styles = {
+let _styles = {
 	meter: {
 		root: {
 			position: 'relative',

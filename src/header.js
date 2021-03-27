@@ -1,22 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 
-class Header extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			selected: "Today"
-		}
-		this.handleClick = this.handleClick.bind(this);	
+const Header = ({handleForecastChange, currentLocation}) => {
+	const [selected, setSelected] = useState("Today");
+	
+	const updateSelected = (id) => {
+		setSelected(id);
 	}
-	updateSelected(id) {
-		this.setState({selected: id});
-	}
-	handleClick(e) {
+	const handleClick = (e) => {
 		e.preventDefault();
-		this.updateSelected(e.target.id);
-		this.props.handleForecastChange(e);		
+		updateSelected(e.target.id);
+		handleForecastChange(e);		
 		e.target.style.textDecoration = 'underline';
 		const listItems = document.getElementsByClassName("headerList")[0].childNodes;
 		listItems.forEach((item) => {
@@ -24,18 +19,16 @@ class Header extends React.Component {
 				item.style.textDecoration = 'none';
 		});
 	}
-	render() {
-		return (
-			<ul className="headerList" style={styles.ul}>
-				<li id="Today" onClick={(e) => {this.handleClick(e);}} style={styles.li}> Today </li>
-				<li id="Tomorrow" onClick={(e) => {this.handleClick(e);}} style={styles.li}> Tomorrow </li>
-				<li id="1 Week" onClick={(e) => {this.handleClick(e);}} style={styles.li}> 1 Week </li>
-				<li style={styles.rli}> 
-					<FontAwesomeIcon icon={faMapMarkerAlt}/> {this.props.currentLocation} 
-				</li>
-			</ul>
-			)
-	}
+	return (
+		<ul className="headerList" style={styles.ul}>
+			<li id="Today" onClick={handleClick} style={styles.li}> Today </li>
+			<li id="Tomorrow" onClick={handleClick} style={styles.li}> Tomorrow </li>
+			<li id="1 Week" onClick={handleClick} style={styles.li}> 1 Week </li>
+			<li style={styles.rli}> 
+				<FontAwesomeIcon icon={faMapMarkerAlt}/> {currentLocation} 
+			</li>
+		</ul>
+	)
 }
 
 let styles = {

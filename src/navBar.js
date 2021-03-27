@@ -64,7 +64,6 @@ const NavBar = ({handleInput, handleSubmit}) => {
 
 	const isDesktop = useMediaQuery({ query: '(min-width: 1224px)' })
 	const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1223px)' })
-	const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
 	
 	const showOptions = (e) => {
 		!hasClicked ? setIcon(faTimes) : setIcon(faPlus)
