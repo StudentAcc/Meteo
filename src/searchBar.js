@@ -30,27 +30,29 @@ const SearchBar = ({handleSubmit}) => {
 		input: {
 			border: 'none',
 			float: 'right',
-			borderRadius: '5px',
+			borderRadius: '20px',
 			padding: '10px 0px 10px 0px',
 			outline: 'none'
 		}
 	}
 	if (isDesktop) {
 		styles.div = {
-				display: 'inline-block',
-				position: 'absolute',
-				top: '30px',
-				right: '30px'
+			display: 'inline-block',
+			position: 'absolute',
+			top: '30px',
+			right: '30px'
 		}
 	} else if (isTabletOrMobile) {
 		styles.div = {
-			width: "85%",
+			zIndex: "1",
+			width: "100%",
 			display: 'inline-block',
 			position: 'absolute',
-			top: '0px',
-			right: '10px',
+			top: '50px',
+			right: '0px',
 		}
-		styles.input.width = "100%"
+		styles.input.width = "97%"
+		styles.input.margin = "10px"
 	}
 		return (
 		  <PlacesAutocomplete
