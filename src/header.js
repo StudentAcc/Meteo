@@ -18,7 +18,7 @@ class Header extends React.Component {
 		this.updateSelected(e.target.id);
 		this.props.handleForecastChange(e);		
 		e.target.style.textDecoration = 'underline';
-		const listItems = document.getElementsByClassName("headerList")[0].childNodes;		console.log(listItems);
+		const listItems = document.getElementsByClassName("headerList")[0].childNodes;
 		listItems.forEach((item) => {
 			if (item.id !== e.target.id) 
 				item.style.textDecoration = 'none';

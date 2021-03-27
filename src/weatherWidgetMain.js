@@ -33,7 +33,7 @@ class WeatherWidgetMain extends React.Component {
 		this.setState({chartData: chartData});
 	}
 	formatWeeklyData() {
-		const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 		const {type} = this.state;
 		const {weatherData} = this.props;
 		let chartData = []

@@ -1,0 +1,20 @@
+.hamburguerMenu {
+	position: relative;
+	width: 100%;
+	border-bottom: 1px white solid;
+}
+.bars {
+	font-size: 30px;
+	color: white;
+}
+
+.fa {
+	font-size: 30px;
+	color: white;
+}
+/* .search { */
+	/* position: relative; */
+	/* font-size: 30px; */
+	/* color: white; */
+	/* padding-left: 20px; */
+/* } */
