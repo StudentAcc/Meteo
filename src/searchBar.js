@@ -21,7 +21,10 @@ const SearchBar = ({handleSubmit}) => {
 		geocodeByAddress(address)
 		  .then(results => {
 			  getLatLng(results[0])
-			  handleSubmit(address);
+			  .then(({ lat, lng }) => {
+			  	console.log(lat,lng);
+				handleSubmit(address,lat,lng);
+			  });
 		  })
 		  .then(latLng => console.log('Success', latLng))
 		  .catch(error => console.error('Error', error));
@@ -32,15 +35,24 @@ const SearchBar = ({handleSubmit}) => {
 			float: 'right',
 			borderRadius: '20px',
 			padding: '10px 0px 10px 0px',
-			outline: 'none'
+			outline: 'none',
+			zIndex: "10000"
 		}
 	}
 	if (isDesktop) {
 		styles.div = {
+<<<<<<< HEAD
 			display: 'inline-block',
 			position: 'absolute',
 			top: '30px',
 			right: '30px'
+=======
+				display: 'inline-block',
+				position: 'absolute',
+				top: '30px',
+				right: '30px',
+				zIndex: "10000"
+>>>>>>> 41454b75220cd1ffb0591e88b14458fa5e5b94ad
 		}
 	} else if (isTabletOrMobile) {
 		styles.div = {
@@ -48,8 +60,14 @@ const SearchBar = ({handleSubmit}) => {
 			width: "100%",
 			display: 'inline-block',
 			position: 'absolute',
+<<<<<<< HEAD
 			top: '50px',
 			right: '0px',
+=======
+			top: '0px',
+			right: '10px',
+			zIndex: "10000"
+>>>>>>> 41454b75220cd1ffb0591e88b14458fa5e5b94ad
 		}
 		styles.input.width = "97%"
 		styles.input.margin = "10px"
@@ -59,6 +77,7 @@ const SearchBar = ({handleSubmit}) => {
 			value={address}
 			onChange={handleChange}
 			onSelect={handleSelect}
+			style = {{zIndex: 10000}}
 		  >
 			{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 			  <div style={styles.div}>

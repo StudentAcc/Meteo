@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMediaQuery } from 'react-responsive'
 import "./navBar.css";
 
-
 const Menu = ({handleSubmit, handleInput}) => {
 	const [hasClicked, setHasClicked] = useState(false);
 	const search = (e) => setHasClicked(!hasClicked);

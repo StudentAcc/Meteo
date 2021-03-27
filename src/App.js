@@ -26,30 +26,43 @@ class App extends React.Component {
 		this.handleForecastChange = this.handleForecastChange.bind(this);
   }
 
- fetchWeatherData(loc, lat, lng) {
+ fetchWeatherData = (loc, lat, lng) => {
 			const key = "3a272e399eccb14fac2be5eeca1b5d00";
 			const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely&appid=${key}&units=metric`
 			fetch(forecast).then(res => res.json())
 			.then((data) => {
 			  console.log(data);
 			  Geocode.fromLatLng(lat, lng).then((res) => {
-          const loc = res.results[0].address_components[2].long_name;
-          this.setState({
-            latitude: lat,
-            longitude: lng,
-            location: loc,
-            forecast: data.hourly[0],
-            daily: data.daily,
-            hourly: data.hourly,
-            hasFetched: true
-            });
+          console.log(res)
+
+          try{
+            var loc = res.results[0].address_components[2].long_name; 
+          } catch(err) {
+            console.error(err);
+            var loc = "Not Available"
+          } finally {
+            this.setState({
+              location: loc,
+              });
+          } 
 			    })
           .catch(err => console.error(err))
+          // .catch(err => console.error(err); var loc = "Not Available";)
+          // .finally( fin => {this.setState({location: loc});});
+
+        this.setState({
+          latitude: lat,
+          longitude: lng,
+          forecast: data.hourly[0],
+          daily: data.daily,
+          hourly: data.hourly,
+          hasFetched: true
+        });
   		})
     .catch(err => console.error(err))
   }
 
-  handleSubmit(address) {
+  handleSubmit(address, lat, lng) {
 		Geocode.fromAddress(address).then((res) => {
 		  const {lat, lng} = res.results[0].geometry.location;
       this.fetchWeatherData(address, lat, lng);
@@ -113,7 +126,10 @@ class App extends React.Component {
                type="Wind"/>
             </Route>
             <Route exact path="/map">
-              <MapWidget {...this.state} fetchWeatherData={this.fetchWeatherData}/>
+            <MapWidget {...this.state} 
+            fetchWeatherData={this.fetchWeatherData}
+            handleSubmit={this.handleSubmit}
+            handleForecastChange={this.handleForecastChange}/>
             </Route>
             <Redirect from="*" to="/"/>
             </Switch>
