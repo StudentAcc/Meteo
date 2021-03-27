@@ -6,23 +6,23 @@ import { Link } from "react-router-dom";
 import "./Homepage.css";
 
 const Homepage = ({location, handleChange, handleSubmit, handleForecastChange, temp, pop, wind_speed}) => {
-		return(
-			<main>
-				<NavBar currentLocation={location} handleInput={handleChange} handleSubmit={handleSubmit}/>
-				<Header currentLocation={location} handleForecastChange={handleForecastChange}/>
-				<div className="widgetsContainer" style={styles.widgetsContainer}>
-					<Link to="/temperature">
-						<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={temp}/>
-					</Link>
-					<Link to="/precipitation">
-						<WeatherWidget className="widgetPrec" style={styles.widgetPrec} name="Precipitation" value={Math.round(pop * 100)}/>
-					</Link>
-					<Link to="/wind">
-						<WeatherWidget className="widgetWind" style={styles.widgetWind} name="Wind" value={Math.round(wind_speed * 3.6)+" km/h"}/>
-					</Link>
-				</div>
-			</main>
-		);
+	return(
+		<main>
+			<NavBar currentLocation={location} handleInput={handleChange} handleSubmit={handleSubmit}/>
+			<Header currentLocation={location} handleForecastChange={handleForecastChange}/>
+			<div className="widgetsContainer" style={styles.widgetsContainer}>
+				<Link to="/temperature">
+					<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={temp}/>
+				</Link>
+				<Link to="/precipitation">
+					<WeatherWidget className="widgetPrec" style={styles.widgetPrec} name="Precipitation" value={Math.round(pop * 100)}/>
+				</Link>
+				<Link to="/wind">
+					<WeatherWidget className="widgetWind" style={styles.widgetWind} name="Wind" value={Math.round(wind_speed * 3.6)+" km/h"}/>
+				</Link>
+			</div>
+		</main>
+	);
 }
 
 
