@@ -68,16 +68,16 @@ class MapWidget extends React.Component {
 	// }
 
 	updateWeatherData (lat,lng){
-		this.props.fetchWeatherDataAux("N/A",lat,lng)
+		this.props.fetchWeatherData("N/A",lat,lng)
 		this.setState({
-		location: this.props.location,
-		temperature: this.props.forecast.temp,
-		precipitation: Math.round(this.props.hourly[0].pop * 100),
-		windSpeed: Math.round(this.props.forecast.wind_speed * 3.6),
-		windDegrees: this.props.forecast.wind_deg,
-		weatherDescription: this.props.forecast.weather[0].main,
-		date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
-		daily: this.props.daily
+			location: this.props.location,
+			temperature: this.props.forecast.temp,
+			precipitation: Math.round(this.props.hourly[0].pop * 100),
+			windSpeed: Math.round(this.props.forecast.wind_speed * 3.6),
+			windDegrees: this.props.forecast.wind_deg,
+			weatherDescription: this.props.forecast.weather[0].main,
+			date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
+			daily: this.props.daily
 		});
 		console.log("updated weather");
 		this.mapPopup.update();
