@@ -7,7 +7,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import Legend from "./Legend";
-// import NavBar from './navBar';
+import NavBar from './navBar';
 
 let DefaultIcon = L.icon({
     ...L.Icon.Default.prototype.options,
@@ -46,7 +46,7 @@ class MapWidget extends React.Component {
 			weatherDescription: this.props.forecast.weather[0].main,
 			date: (new Date(this.props.forecast.dt * 1000)).toLocaleDateString("en-GB"),
 			daily: this.props.daily,
-			hasMounted: false,
+			hasMounted: false
 		};
 		// this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
 		// this.fetchWeatherDataAux = this.fetchWeatherData.bind(this);
@@ -67,8 +67,10 @@ class MapWidget extends React.Component {
 	// 	};
 	// }
 
-	updateWeatherData (lat,lng){
-		this.props.fetchWeatherDataAux("N/A",lat,lng)
+	updateWeatherData = (address,lat,lng) => {
+		var newLatLng = new L.LatLng(lat, lng);
+		this.mapMarker.setLatLng(newLatLng);
+		this.props.fetchWeatherData("N/A",lat,lng);
 		this.setState({
 		location: this.props.location,
 		temperature: this.props.forecast.temp,
@@ -88,8 +90,8 @@ class MapWidget extends React.Component {
 	}
 
 	updateMarker = (e) => {
-		this.map.leafletElement.position.setLatLng(e.latlng)
-		console.log("clicked")
+		this.map.leafletElement.position.setLatLng(e.latlng);
+		console.log("clicked");
 	}
 
 	baseLayerChange = event => {
@@ -100,14 +102,17 @@ class MapWidget extends React.Component {
 			// console.log(x[i].nextElementSibling.innerHTML);
 			console.log(i);
 			console.log(x[i].style.opacity);
-		  	if (x[i].style.opacity === 1.1){
-				x[i].style.zIndex = 10;
+			console.log(x);
+		  	if (x[i].style.opacity == 1.1){
+				x[i].style.zIndex = 100;
 				// var map = withMyHook()
 				// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
 		  	} else {
 				x[i].style.zIndex = 0;
-			  }
+			}
 		}
+		return
+
 
 		// x[1].style.zIndex = "10";
 
@@ -144,9 +149,9 @@ class MapWidget extends React.Component {
 		// const customMarker = L.icon({ iconUrl: require('/icon.jpg'), })
 		return (
 			<div style = {{height: '100vh'}}>
-				{/* <NavBar></NavBar> */}
+				<NavBar currentLocation={this.state.location} handleSubmit={this.updateWeatherData}/>
 				<MapContainer
-				style={{ width: '100%', height: '100%', zIndex:'0'  }}
+				style={{ width: '100%', height: '90%', zIndex:'0'  }}
 				center={coords} 
 				zoom={15} 
 				scrollWheelZoom={true}
@@ -155,7 +160,7 @@ class MapWidget extends React.Component {
 				whenReady={this.whenReadyHandler}
 				eventHandlers={{
 					click: () => {
-					console.log('marker clicked')
+						console.log('marker clicked')
 					},
 				}}>
 					<LayersControl position="topright" collapsed={true}>
@@ -197,7 +202,8 @@ class MapWidget extends React.Component {
 					</LayersControl>
 					<LayersControl position="topright" collapsed={true}>
 						<LayersControl.BaseLayer name="None" checked>
-							<LayerGroup>
+							<LayerGroup
+							opacity = {1.1}>
 							</LayerGroup>
 						</LayersControl.BaseLayer>
 						<LayersControl.BaseLayer name="Temperature">
@@ -252,7 +258,7 @@ class MapWidget extends React.Component {
 						</LayersControl.BaseLayer>
 					</LayersControl>
 					<Marker ref={(ref) => { this.mapMarker = ref; }} position={coords} draggable = {true} eventHandlers={{
-						dragend: (e) => {
+						moveend: (e) => {
 							var coords = this.mapMarker.getLatLng();
 							console.log('marker moved'+coords);
 							this.setState ({
@@ -270,7 +276,9 @@ class MapWidget extends React.Component {
 							// }, (err) => {
 							// 	console.log(err);
 							// });
-							this.updateWeatherData(this.state.lat, this.state.lng);
+							this.mapMarker.update()
+							this.updateWeatherData("N/A", this.state.lat, this.state.lng);
+							this.mapMarker.update()
 							//console.log(address);
 							// var address = `https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=${key}`;
 							// App.fetchWeatherData()

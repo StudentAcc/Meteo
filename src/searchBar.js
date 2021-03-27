@@ -21,7 +21,10 @@ const SearchBar = ({handleSubmit}) => {
 		geocodeByAddress(address)
 		  .then(results => {
 			  getLatLng(results[0])
-			  handleSubmit(address);
+			  .then(({ lat, lng }) => {
+			  	console.log(lat,lng);
+				handleSubmit(address,lat,lng);
+			  });
 		  })
 		  .then(latLng => console.log('Success', latLng))
 		  .catch(error => console.error('Error', error));

@@ -20,13 +20,17 @@ const Menu = ({handleSubmit, handleInput}) => {
 			</li>
 			<li style={styles.li}>
 				<Link style={styles.link} to="/map"> 
-					<FontAwesomeIcon style={styles.fa}  icon={faGlobeEurope}/> 
+					<FontAwesomeIcon style={styles.fa}  icon={faGlobeEurope}/>
 				</Link>
 			</li>
 		</ul>
 		<SearchBar styles={styles} handleInput={handleInput} handleSubmit={handleSubmit}/>
 	</nav>
 	)
+}
+
+function refreshPage () {
+	window.location.reload();
 }
 
 const TabletMenu = ({handleSubmit, handleInput}) => {
