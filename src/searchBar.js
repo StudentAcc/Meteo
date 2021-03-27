@@ -1,35 +1,62 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PlacesAutocomplete, {
 	geocodeByAddress,
 	getLatLng,
   } from 'react-places-autocomplete';  
 
-class SearchBar extends React.Component {
-	// Used as suggested in react-places-autocomplete
-	constructor(props) {
-		super(props);
-		this.state = { address: '' };
-	  }
+  import {useMediaQuery} from "react-responsive"
+
+const SearchBar = ({handleSubmit}) => {
+	// Adapted from react-places-autocomplete
+	const [address, setAddress] = useState('');
+
+	const isDesktopOrLaptop = useMediaQuery({query: '(min-device-width: 1224px)'})
+	const isTabletOrMobileDevice = useMediaQuery({query: '(max-device-width: 1224px)'})
 	
-	  handleChange = address => {
-		this.setState({ address });
-	  };
+	const handleChange = (address) => {
+		setAddress(address);
+	};
 	
-	  handleSelect = address => {
+	const handleSelect = (address) => {
 		geocodeByAddress(address)
 		  .then(results => {
 			  getLatLng(results[0])
-			  this.props.handleSubmit(address);
+			  handleSubmit(address);
 		  })
 		  .then(latLng => console.log('Success', latLng))
 		  .catch(error => console.error('Error', error));
 	  };
-	  render() {
+	let styles = {
+		input: {
+			border: 'none',
+			float: 'right',
+			borderRadius: '5px',
+			padding: '10px 0px 10px 0px',
+			outline: 'none'
+		}
+	}
+	if (isDesktopOrLaptop) {
+		styles.div = {
+				display: 'inline-block',
+				position: 'absolute',
+				top: '30px',
+				right: '30px'
+		}
+	} else if (isTabletOrMobileDevice) {
+		styles.div = {
+			width: "85%",
+			display: 'inline-block',
+			position: 'absolute',
+			top: '0px',
+			right: '10px',
+		}
+		styles.input.width = "100%"
+	}
 		return (
 		  <PlacesAutocomplete
-			value={this.state.address}
-			onChange={this.handleChange}
-			onSelect={this.handleSelect}
+			value={address}
+			onChange={handleChange}
+			onSelect={handleSelect}
 		  >
 			{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 			  <div style={styles.div}>
@@ -64,25 +91,7 @@ class SearchBar extends React.Component {
 			  </div>
 			)}
 		  </PlacesAutocomplete>
-		);
-	  }
-	}
-	
-
-let styles = {
-	div: {
-		display: 'inline-block',
-		position: 'absolute',
-		top: '30px',
-		right: '30px'
-	},
-	input: {
-		border: 'none',
-		float: 'right',
-		borderRadius: '5px',
-		padding: '10px 0px 10px 0px',
-		outline: 'none'
-	}
-}
+	);
+}	
 
 export default SearchBar
