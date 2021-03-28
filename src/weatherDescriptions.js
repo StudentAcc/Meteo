@@ -1,7 +1,7 @@
 const weatherBackground = {
   Clear: {
     // sunny yellow
-    backgroundImage: "linear-gradient(to right top, #eef477, #f1f689, #f4f89a, #f7faab, #fafcbc, #f9f5b7, #f8eeb2, #f7e7ad, #f4d493, #f3c07c, #f2ab69, #f1955a)",
+    backgroundImage: "linear-gradient(to right top, #2cabfd, #35b4fd, #42bdfc, #52c5fb, #63cdfa, #51d7fb, #44e0f8, #42e9f2, #3af4dd, #64fbbc, #9aff94, #d2ff6b)",
   },
   Clouds: {
     //white with grey
