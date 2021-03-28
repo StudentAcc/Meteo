@@ -1,6 +1,7 @@
 import React from "react";
 import "./weather_icons/css/weather-icons.css";
 
+//Header for precipitation widget
 const PrecipitationHeader = (props) => {
 	return ( 
 		<div style={{color: "white"}}>

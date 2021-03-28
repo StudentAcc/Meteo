@@ -7,6 +7,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import NavBar from './navBar';
 
+// Marker icon reset
 let DefaultIcon = L.icon({
     ...L.Icon.Default.prototype.options,
     iconUrl: icon,
@@ -15,8 +16,10 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
+
 class MapWidget extends React.Component {
 
+	// Constructor
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,6 +36,7 @@ class MapWidget extends React.Component {
 		};
 	}
 
+	// Updates marker and popup info
 	updateWeatherData = (address,lat,lng) => {
 		var newLatLng = new L.LatLng(lat, lng);
 		this.mapMarker.setLatLng(newLatLng);
@@ -53,15 +57,12 @@ class MapWidget extends React.Component {
 		this.mapPopup.update();
 	}
 
+	// Gets current timestamp
 	getCurrentTimestamp() {
 		return Math.floor(Date.now()/1000);
 	}
 
-	updateMarker = (e) => {
-		this.map.leafletElement.position.setLatLng(e.latlng);
-		console.log("clicked");
-	}
-
+	// Chnages zIndex of overlay to go above base layer
 	baseLayerChange = event => {
 		console.log('baseLayerChange event', event);
 		var x = document.getElementsByClassName("leaflet-layer");
@@ -79,6 +80,7 @@ class MapWidget extends React.Component {
 		return
 	}
 	
+	// Map ready event handler
 	whenReadyHandler = event => {
 		const { target } = event;
 		target.on('baselayerchange', this.baseLayerChange);
@@ -201,6 +203,7 @@ class MapWidget extends React.Component {
 						</LayersControl.BaseLayer>
 					</LayersControl>
 					<Marker ref={(ref) => { this.mapMarker = ref; }} position={coords} draggable = {true} eventHandlers={{
+						// Marker end of movement event handler
 						moveend: (e) => {
 							var coords = this.mapMarker.getLatLng();
 							console.log('marker moved'+coords);

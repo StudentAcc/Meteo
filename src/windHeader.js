@@ -2,6 +2,7 @@ import React from "react";
 import "./weather_icons/css/weather-icons.css";
 import "./weather_icons/css/weather-icons-wind.css";
 
+//Header for wind widget
 const WindHeader = (props) => {
 	const getDirection = () => {
 		const {wind_deg} = props[0];

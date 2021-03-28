@@ -1,6 +1,7 @@
 import React from "react";
 import "./weather_icons/css/weather-icons.css";
 
+//Header for temperature widget
 const TemperatureHeader = (props) => {
 	return ( 
 		<div style={{color: "white"}}>
@@ -13,10 +14,6 @@ const TemperatureHeader = (props) => {
 				<li style={styles.li}> {props[0].feels_like}<i className="wi wi-celsius"></i> </li>
 			</ul>
 			<div style={{float: "right", justifyContent: "right"}}>
-			{/* <ul style={styles.ul}>
-				<li style={styles.li}> High: {this.props.daily[0].temp.max+"°C"} </li>
-				<li style={styles.li}> Low: {this.props.daily[0].temp.min+"°C"} </li>
-			</ul> */}
 			</div>
 	</div>
 	);
