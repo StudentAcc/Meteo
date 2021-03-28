@@ -5,6 +5,7 @@ import Header from './header';
 import { Link } from "react-router-dom";
 import "./Homepage.css";
 
+// Homepage component 
 const Homepage = ({location, handleChange, handleSubmit, handleForecastChange, temp, pop, wind_speed}) => {
 	return(
 		<main>

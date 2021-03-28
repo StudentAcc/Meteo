@@ -25,7 +25,7 @@ class App extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleForecastChange = this.handleForecastChange.bind(this);
   }
-
+ // Make api call to open weather and set App component
  fetchWeatherData = (loc, lat, lng) => {
 			const key = "3a272e399eccb14fac2be5eeca1b5d00";
 			const forecast = `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=minutely&appid=${key}&units=metric`
@@ -44,8 +44,6 @@ class App extends React.Component {
           } 
 			  })
         .catch(err => console.error(err))
-          // .catch(err => console.error(err); var loc = "Not Available";)
-          // .finally( fin => {this.setState({location: loc});});
         this.setState({
           latitude: lat,
           longitude: lng,
@@ -57,7 +55,7 @@ class App extends React.Component {
   		})
     .catch(err => console.error(err))
   }
-
+  // Handle search 
   handleSubmit(address, lat, lng) {
 		Geocode.fromAddress(address).then((res) => {
 		  const {lat, lng} = res.results[0].geometry.location;
@@ -65,7 +63,7 @@ class App extends React.Component {
     }) 
    .catch(err => console.log(err));
   }
-  
+  // Handle forecast period change
   handleForecastChange(e) {
     e.preventDefault();
       if (e.target.id === 'Today') 

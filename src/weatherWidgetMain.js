@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from "react";
 import {useHistory} from "react-router-dom";
 
+// Component that handles the forecast period change - today, tomorrow, 1 week - hourly, daily
 const WeatherWidgetMain = ({type, weatherData, location}) => {
 	const [chartData, setChartData] = useState([]);
 	const [hasMounted, setHasMounted] = useState(false);
@@ -14,7 +15,8 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 	const history = useHistory();
 
 	const getVarName = (obj) => Object.keys(obj)[0];
-
+	
+	// format data based on the forecast period 
 	const formatData = (lo, hi, data, period) => {
 		const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 		let chartData = [], y, dth;
