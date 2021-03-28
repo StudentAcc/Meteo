@@ -34,22 +34,18 @@ class App extends React.Component {
 			  console.log(data);
 			  Geocode.fromLatLng(lat, lng).then((res) => {
           console.log(res)
-
           try{
             var loc = res.results[0].address_components[2].long_name; 
           } catch(err) {
             console.error(err);
             var loc = "Not Available"
           } finally {
-            this.setState({
-              location: loc,
-              });
+            this.setState({location: loc});
           } 
-			    })
-          .catch(err => console.error(err))
+			  })
+        .catch(err => console.error(err))
           // .catch(err => console.error(err); var loc = "Not Available";)
           // .finally( fin => {this.setState({location: loc});});
-
         this.setState({
           latitude: lat,
           longitude: lng,
