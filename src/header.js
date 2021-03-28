@@ -2,12 +2,14 @@ import React, {useState} from 'react';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 
+// Header component as present in three widgets
 const Header = ({handleForecastChange, currentLocation, weekly}) => {
 	const [selected, setSelected] = useState("Today");
 	
 	const updateSelected = (id) => {
 		setSelected(id);
 	}
+	// Underline clicked header field and make API Call
 	const handleClick = (e) => {
 		e.preventDefault();
 		updateSelected(e.target.id);

@@ -6,6 +6,7 @@ import PlacesAutocomplete, {
 
 import {useMediaQuery} from "react-responsive"
 
+// Responsive search bar w/ media queries
 const SearchBar = ({handleSubmit}) => {
 	// Adapted from react-places-autocomplete
 	const [address, setAddress] = useState('');

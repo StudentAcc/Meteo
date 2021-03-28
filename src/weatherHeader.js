@@ -4,7 +4,7 @@ import TemperatureHeader from "./temperatureHeader";
 import PrecipitationHeader from "./precipitationHeader";
 import WindHeader from "./windHeader";
 
-//Header selection for all widgets
+// Weather header component that links to each widget's own instance
 const WeatherHeader = (props) => {
 	return( 
 		<div className="headerBorder">

@@ -3,6 +3,7 @@ import "./weather_icons/css/weather-icons-wind.css";
 import { WiWindDeg} from "weather-icons-react";
 import "./wind.css";
 
+// Differents SVG weather charts - temperature, precipitation, wind
 const WeatherChart = ({type, data, period}) => {
 	const color = "white";
 	const svgHeight = 100;
