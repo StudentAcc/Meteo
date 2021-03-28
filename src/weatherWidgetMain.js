@@ -12,7 +12,7 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 	
 	const formatDailyData = (tstart, tend) => {
 		let chartData = [], y;
-		for (var x=0, i=tstart; i<tend+2; x++, i++) {
+		for (var x=0, i=tstart; i<tend; x++, i++) {
 			const dth =  (new Date(weatherData[0].hourly[i].dt * 1000)).getHours();
 			if (type === "Temperature") 
 				y = weatherData[0].hourly[i].temp;
