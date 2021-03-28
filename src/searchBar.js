@@ -41,18 +41,10 @@ const SearchBar = ({handleSubmit}) => {
 	}
 	if (isDesktop) {
 		styles.div = {
-<<<<<<< HEAD
 			display: 'inline-block',
 			position: 'absolute',
 			top: '30px',
 			right: '30px'
-=======
-				display: 'inline-block',
-				position: 'absolute',
-				top: '30px',
-				right: '30px',
-				zIndex: "10000"
->>>>>>> 41454b75220cd1ffb0591e88b14458fa5e5b94ad
 		}
 	} else if (isTabletOrMobile) {
 		styles.div = {
@@ -60,14 +52,8 @@ const SearchBar = ({handleSubmit}) => {
 			width: "100%",
 			display: 'inline-block',
 			position: 'absolute',
-<<<<<<< HEAD
 			top: '50px',
 			right: '0px',
-=======
-			top: '0px',
-			right: '10px',
-			zIndex: "10000"
->>>>>>> 41454b75220cd1ffb0591e88b14458fa5e5b94ad
 		}
 		styles.input.width = "97%"
 		styles.input.margin = "10px"
