@@ -9,52 +9,56 @@ import { useEffect } from "react";
 const WeatherWidgetMain = ({type, weatherData, location}) => {
 	const [chartData, setChartData] = useState([]);
 	const [hasMounted, setHasMounted] = useState(false);
+	const [period, setPeriod] = useState("Hourly");
 	
-	const formatDailyData = (tstart, tend) => {
-		let chartData = [], y;
-		for (var x=0, i=tstart; i<tend; x++, i++) {
-			const dth =  (new Date(weatherData[0].hourly[i].dt * 1000)).getHours();
-			if (type === "Temperature") 
-				y = weatherData[0].hourly[i].temp;
-			else if (type === "Precipitation") 
-				y = weatherData[0].hourly[i].pop * 100;
-			else if (type === "Wind") 
-				y = Math.round(weatherData[0].hourly[i].wind_deg);
-			chartData.push({x,y,dth});
-		}
-		setChartData(chartData);
-	}
-	const formatWeeklyData = () => {
+	const getVarName = (obj) => Object.keys(obj)[0];
+
+	const formatData = (lo, hi, data, period) => {
 		const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-		let chartData = [], y;
-		for (var x=0; x<weatherData[1].daily.length; x++) {
-			const dth = weekDays[(new Date(weatherData[1].daily[x].dt * 1000)).getDay()];
+		let chartData = [], y, dth;
+		for (var x=0, i=lo; i<hi; i++, x++) {
+			if (period === "hourly")
+				dth = (new Date(data[i].dt * 1000)).getHours();
+			else 
+				dth = weekDays[(new Date(data[i].dt * 1000)).getDay()];
 			if (type === "Temperature") 
-				y = weatherData[1].daily[x].temp.day;
+				if (data[i].temp.constructor === Object) 
+					y = data[i].temp.day;
+				else 
+					y = data[i].temp
 			else if (type === "Precipitation") 
-				y = weatherData[1].daily[x].pop * 100;
+				y = data[i].pop * 100;
 			else if (type === "Wind") 
-				y = Math.round(weatherData[1].daily[x].wind_deg);
+				y = Math.round(data[i].wind_deg);
 			chartData.push({x,y,dth});
 		}
 		setChartData(chartData);
+
 	}
+
 	const handleForecastChange = (e) => {
 		e.preventDefault();
-		const tstart = (new Date(weatherData[0].hourly[0].dt * 1000)).getHours();
-		let tend = 24 - tstart;
-		if (e.target.id === 'Today') 
-		  formatDailyData(0, tend); 
-		else if (e.target.id === 'Tomorrow') 
-		  formatDailyData(tend, 24+tend); 	
-		else
-		  formatWeeklyData();
+		const hourly = weatherData[0].hourly, daily = weatherData[1].daily;
+		const tstart = (new Date(hourly[0].dt * 1000)).getHours();
+		const tend = 24 - tstart;
+		if (e.target.id === "Today") {
+			formatData(0, tend, hourly, getVarName({hourly}));
+			setPeriod("Hourly");
+		} else if (e.target.id === "Tomorrow") {
+			formatData(tend, 24+tend, hourly, getVarName({hourly}))
+			setPeriod("Hourly");
+		} else {
+			const dend = weatherData[1].daily.length;
+			formatData(0, dend, daily, getVarName({daily}));
+			setPeriod("Daily");
+		}
 	}
 	useEffect(() => {
 		const tstart = (new Date(weatherData[0].hourly[0].dt * 1000)).getHours();
 		let tend = 24 - tstart;
-		console.log("Here");
-		formatDailyData(0, tend);
+		const hourly = weatherData[0].hourly;
+		formatData(0, tend, hourly, getVarName({hourly}));
+		setPeriod("Hourly");
 		setHasMounted(true);
 	}, [setHasMounted])	
 	if (!hasMounted) 
@@ -66,7 +70,7 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 				<Header currentLocation={location} handleForecastChange={handleForecastChange}/>
 			</div>
 			<WeatherHeader type={type} {...weatherData}/>
-			<WeatherChart data={chartData} type={type}/>
+			<WeatherChart data={chartData} type={type} period={period === "Hourly" ? "Hourly" : "Daily"}/>
 		</div>
 	);
 }
