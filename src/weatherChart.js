@@ -51,8 +51,8 @@ const WeatherChart = ({type, data, period}) => {
 				{data.map((coord) => (
 					<>
 					{console.log(coord.y)}
-						 <rect fill="#e4ecef" fillOpacity="0.8" transform={`translate(0 0) rotate(180 ${getSVGX(coord.x)} ${getSVGY(0)})`} style={{transition: "0.5s all"}}
-						  x = {getSVGX(coord.x)} y = {getSVGY(-4)} 
+						 <rect fill="#e4ecef" fillOpacity="0.8" transform={`translate(0 -10) rotate(180 ${getSVGX(coord.x)} ${getSVGY(0)})`} style={{transition: "0.5s all"}}
+						  x = {getSVGX(coord.x)} y = {getSVGY(0)} 
 						  width={getSVGX(getMaxX())/data.length} height={100-getSVGY(coord.y)}/>
 					</>
 				))}
