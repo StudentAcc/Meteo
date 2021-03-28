@@ -2,7 +2,7 @@
 
 ## Install dependencies
 
-### npm install
+### `npm install`
 
 Installs the project's dependencies in the local node_modules folder.
 
