@@ -5,7 +5,7 @@ const weatherBackground = {
   },
   Clouds: {
     //white with grey
-    backgroundImage: "linear-gradient(to right top, #c7d2e1, #bccfd7, #b6cacb, #b5c5bf, #b6beb5)"
+    backgroundImage: "linear-gradient(to right top, #a3a3a3, #a1a1a1, #9f9f9f, #9d9d9d, #9b9b9b, #989898, #959595, #929292, #8e8e8e, #898989, #858585, #818181)"
   },
   Drizzle: {
     // dark blue
