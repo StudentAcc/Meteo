@@ -10,8 +10,7 @@ import {useHistory} from "react-router-dom";
 const WeatherWidgetMain = ({type, weatherData, location}) => {
 	const [chartData, setChartData] = useState([]);
 	const [hasMounted, setHasMounted] = useState(false);
-	const [period, setPeriod] = useState("Hourly");
-	
+	const [period, setPeriod] = useState("Hourly");	
 	const history = useHistory();
 
 	const getVarName = (obj) => Object.keys(obj)[0];
@@ -36,7 +35,6 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 			chartData.push({x,y,dth});
 		}
 		setChartData(chartData);
-
 	}
 
 	const handleForecastChange = (e) => {
@@ -45,10 +43,10 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 		const tstart = (new Date(hourly[0].dt * 1000)).getHours();
 		const tend = 24 - tstart;
 		if (e.target.id === "Today") {
-			formatData(0, tend, hourly, getVarName({hourly}));
+			formatData(0, tend+1, hourly, getVarName({hourly}));
 			setPeriod("Hourly");
 		} else if (e.target.id === "Tomorrow") {
-			formatData(tend, 24+tend, hourly, getVarName({hourly}))
+			formatData(tend, 24+tend+1, hourly, getVarName({hourly}))
 			setPeriod("Hourly");
 		} else {
 			const dend = weatherData[1].daily.length;
@@ -60,7 +58,7 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 		const tstart = (new Date(weatherData[0].hourly[0].dt * 1000)).getHours();
 		let tend = 24 - tstart;
 		const hourly = weatherData[0].hourly;
-		formatData(0, tend, hourly, getVarName({hourly}));
+		formatData(0, tend+1, hourly, getVarName({hourly}));
 		setPeriod("Hourly");
 		setHasMounted(true);
 	}, [setHasMounted])	
@@ -70,7 +68,7 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 		<div>
 			<FontAwesomeIcon onClick={() => history.goBack()} style={styles.back} icon={faArrowLeft}/>
 			<div style={styles.header}> 
-				<Header currentLocation={location} handleForecastChange={handleForecastChange}/>
+				<Header weekly={true} currentLocation={location} handleForecastChange={handleForecastChange}/>
 			</div>
 			<WeatherHeader type={type} {...weatherData}/>
 			<WeatherChart data={chartData} type={type} period={period === "Hourly" ? "Hourly" : "Daily"}/>

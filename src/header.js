@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 
-const Header = ({handleForecastChange, currentLocation}) => {
+const Header = ({handleForecastChange, currentLocation, weekly}) => {
 	const [selected, setSelected] = useState("Today");
 	
 	const updateSelected = (id) => {
@@ -23,7 +23,7 @@ const Header = ({handleForecastChange, currentLocation}) => {
 		<ul className="headerList" style={styles.ul}>
 			<li id="Today" onClick={handleClick} style={styles.li}> Today </li>
 			<li id="Tomorrow" onClick={handleClick} style={styles.li}> Tomorrow </li>
-			<li id="1 Week" onClick={handleClick} style={styles.li}> 1 Week </li>
+			{weekly && <li id="1 Week" onClick={handleClick} style={styles.li}> 1 Week </li>}
 			<li style={styles.rli}> 
 				<FontAwesomeIcon icon={faMapMarkerAlt}/> {currentLocation} 
 			</li>

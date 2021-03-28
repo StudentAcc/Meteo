@@ -9,7 +9,7 @@ const Homepage = ({location, handleChange, handleSubmit, handleForecastChange, t
 	return(
 		<main>
 			<NavBar currentLocation={location} handleInput={handleChange} handleSubmit={handleSubmit}/>
-			<Header currentLocation={location} handleForecastChange={handleForecastChange}/>
+			<Header weekly={false} currentLocation={location} handleForecastChange={handleForecastChange}/>
 			<div className="widgetsContainer" style={styles.widgetsContainer}>
 				<Link to="/temperature">
 					<WeatherWidget className="widgetTemp" style={styles.widgetTemp} name="Temperature" value={temp}/>
