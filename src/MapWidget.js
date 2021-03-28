@@ -1,12 +1,10 @@
 import React from "react";
-import {useMap, MapConsumer, MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
+import {MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from "leaflet";
-// import Geocode from "react-geocode";
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
-import Legend from "./Legend";
 import NavBar from './navBar';
 
 let DefaultIcon = L.icon({
@@ -17,23 +15,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-//let image = require("./test.png");
-
 class MapWidget extends React.Component {
-
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {
-	// 		latitude: null,
-	// 		longitude: null,
-	// 		location: null,
-	// 		current: null,
-	// 		daily: null,
-	// 		hourly: null,
-	// 		hasFetched: false
-	// 	};
-	// 	this.props = this.fetchWeatherData();
-	// }
 
 	constructor(props) {
 		super(props);
@@ -49,24 +31,7 @@ class MapWidget extends React.Component {
 			hasMounted: false,
 			map: null
 		};
-		// this.props.fetchWeatherDataAux.bind(this.lat, this.lng)
-		// this.fetchWeatherDataAux = this.fetchWeatherData.bind(this);
 	}
-
-	// updateWeatherData (lat,lng){
-	// 	this.fetchWeatherData(lat,lng) ;
-	// 	this.state = {
-	// 		location: this.state.location,
-	// 		temperature: this.state.forecast.temp,
-	// 		precipitation: Math.round(this.state.hourly[0].pop * 100),
-	// 		windSpeed: Math.round(this.state.forecast.wind_speed * 3.6),
-	// 		windDegrees: this.state.forecast.wind_deg,
-	// 		weatherDescription: this.state.forecast.weather[0].main,
-	// 		date: (new Date(this.state.forecast.dt * 1000)).toLocaleDateString("en-GB"),
-	// 		daily: this.state.daily,
-	// 		hasMounted: false
-	// 	};
-	// }
 
 	updateWeatherData = (address,lat,lng) => {
 		var newLatLng = new L.LatLng(lat, lng);
@@ -102,37 +67,16 @@ class MapWidget extends React.Component {
 		var x = document.getElementsByClassName("leaflet-layer");
 		var i;
 		for (i = 0; i < x.length; i++) {
-			// console.log(x[i].nextElementSibling.innerHTML);
 			console.log(i);
 			console.log(x[i].style.opacity);
 			console.log(x);
 		  	if (x[i].style.opacity == 1.1){
 				x[i].style.zIndex = 100;
-				// var map = withMyHook()
-				// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
 		  	} else {
 				x[i].style.zIndex = 0;
 			}
 		}
 		return
-
-
-		// x[1].style.zIndex = "10";
-
-		// var x = document.getElementsByClassName("leaflet-control-layers-selector");
-		// var i;
-		// for (i = 6; i < x.length; i++) {
-		// 	// console.log(x[i].nextElementSibling.innerHTML);
-		// 	console.log(event.name);
-		//   	if (x[i].nextElementSibling.innerHTML.substring(1) != event.name){
-		// 		console.log(x[i].nextElementSibling.innerHTML);
-		// 		x[i].checked = false;
-		// 		console.log(event.name)
-		// 		// var map = withMyHook()
-		// 		// map.removeLayer(x[i].nextElementSibling.innerHTML.substring(1));
-		//   	}
-		// }
-		// // event.layer.remove();
 	}
 	
 	whenReadyHandler = event => {
@@ -149,17 +93,14 @@ class MapWidget extends React.Component {
 			left: '0px',
 			bottom: '0px'
 		  };
-		// const customMarker = L.icon({ iconUrl: require('/icon.jpg'), })
 		return (
-			<div style = {{height: '100vh'}}>
+			<div style = {{height: '100vh',   display: "flex", flexFlow: "column"}}>
 				<NavBar currentLocation={this.state.location} handleSubmit={this.updateWeatherData}/>
 				<MapContainer
-				style={{ width: '100%', height: '90%', zIndex:'0'  }}
+				style={{ width: '100%', flexGrow:'1', zIndex:'0'  }}
 				center={coords} 
 				zoom={15} 
 				scrollWheelZoom={true}
-				// touchZoom={true}
-				// whenCreated={(map: L.Map} => void};
 				whenReady={this.whenReadyHandler}
 				whenCreated={map => this.setState({ map })}
 				eventHandlers={{
@@ -237,7 +178,6 @@ class MapWidget extends React.Component {
 						<LayersControl.BaseLayer name="Wind speed">
 							<LayerGroup>
 								<TileLayer 
-								// PLace holders
 								opacity = {1.1}
 								attribution='<img src="Weather-Gradient-Charts/wind-speed.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
@@ -249,7 +189,6 @@ class MapWidget extends React.Component {
 								opacity = {1.1}
 								attribution='<img src="Weather-Gradient-Charts/wind-speed.png" style="position: absolute; left: 0; bottom: 0; margin: 2vw calc(100% - 97vw); width: 25vw;"/>'
 								url={`http://maps.openweathermap.org/maps/2.0/weather/WND/{z}/{x}/{y}?date=${this.getCurrentTimestamp()}&appid=f6a4ad984d34e8c6e01aecdcce1a31c7`}/>
-								{/* <img src="test.png" style="Legend.css"/> */}
 							</LayerGroup>
 						</LayersControl.BaseLayer>
 						<LayersControl.BaseLayer name="Sea level pressure">
@@ -269,23 +208,9 @@ class MapWidget extends React.Component {
 								lat: coords.lat,
 								lng: coords.lng
 							})
-							// console.log(this.state.lat);
-							// console.log(this.state.lng);
-							// Geocode.setLocationType("ROOFTOP");
-							// Geocode.setApiKey("AIzaSyAZOPHHp7iiz1Y9dAcsLxU86qSKvWEsWFk");
-							// Geocode.fromLatLng(this.state.lat,this.state.lng).then((res) => {
-							// 	address = res.results[0].formatted_address;
-							// 	console.log(address);
-							// 	this.props.handleSubmit(address);
-							// }, (err) => {
-							// 	console.log(err);
-							// });
 							this.mapMarker.update()
 							this.updateWeatherData("N/A", this.state.lat, this.state.lng);
 							this.mapMarker.update()
-							//console.log(address);
-							// var address = `https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=${key}`;
-							// App.fetchWeatherData()
 						}}}>
 						<Popup ref={(ref) => { this.mapPopup = ref; }} >
 							Temperature: { this.state.temperature+"°C"};

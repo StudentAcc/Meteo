@@ -34,7 +34,7 @@ const SearchBar = ({handleSubmit}) => {
 			border: 'none',
 			float: 'right',
 			borderRadius: '20px',
-			padding: '10px 0px 10px 0px',
+			padding: '10px 0px 10px 15px',
 			outline: 'none',
 			zIndex: "10000"
 		}
@@ -44,11 +44,10 @@ const SearchBar = ({handleSubmit}) => {
 			display: 'inline-block',
 			position: 'absolute',
 			top: '30px',
-			right: '30px'
+			right: '30px',
 		}
 	} else if (isTabletOrMobile) {
 		styles.div = {
-			zIndex: "1",
 			width: "100%",
 			display: 'inline-block',
 			position: 'absolute',
@@ -58,6 +57,8 @@ const SearchBar = ({handleSubmit}) => {
 		styles.input.width = "97%"
 		styles.input.margin = "10px"
 	}
+	styles.div.zIndex = "1000"
+
 		return (
 		  <PlacesAutocomplete
 			value={address}
