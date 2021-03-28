@@ -5,12 +5,15 @@ import WeatherChart from "./weatherChart";
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { useEffect } from "react";
+import {useHistory} from "react-router-dom";
 
 const WeatherWidgetMain = ({type, weatherData, location}) => {
 	const [chartData, setChartData] = useState([]);
 	const [hasMounted, setHasMounted] = useState(false);
 	const [period, setPeriod] = useState("Hourly");
 	
+	const history = useHistory();
+
 	const getVarName = (obj) => Object.keys(obj)[0];
 
 	const formatData = (lo, hi, data, period) => {
@@ -65,7 +68,7 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 		return <h1> Please wait </h1>
 	return (
 		<div>
-			<FontAwesomeIcon style={styles.back} icon={faArrowLeft}/>
+			<FontAwesomeIcon onClick={() => history.goBack()} style={styles.back} icon={faArrowLeft}/>
 			<div style={styles.header}> 
 				<Header currentLocation={location} handleForecastChange={handleForecastChange}/>
 			</div>
