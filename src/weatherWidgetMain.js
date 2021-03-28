@@ -45,10 +45,10 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 		const tstart = (new Date(hourly[0].dt * 1000)).getHours();
 		const tend = 24 - tstart;
 		if (e.target.id === "Today") {
-			formatData(0, tend+1, hourly, getVarName({hourly}));
+			formatData(0, tend, hourly, getVarName({hourly}));
 			setPeriod("Hourly");
 		} else if (e.target.id === "Tomorrow") {
-			formatData(tend, 24+tend+1, hourly, getVarName({hourly}))
+			formatData(tend, 24+tend, hourly, getVarName({hourly}))
 			setPeriod("Hourly");
 		} else {
 			const dend = weatherData[1].daily.length;
@@ -60,7 +60,7 @@ const WeatherWidgetMain = ({type, weatherData, location}) => {
 		const tstart = (new Date(weatherData[0].hourly[0].dt * 1000)).getHours();
 		let tend = 24 - tstart;
 		const hourly = weatherData[0].hourly;
-		formatData(0, tend+1, hourly, getVarName({hourly}));
+		formatData(0, tend, hourly, getVarName({hourly}));
 		setPeriod("Hourly");
 		setHasMounted(true);
 	}, [setHasMounted])	
