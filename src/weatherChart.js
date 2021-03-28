@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import "./weather_icons/css/weather-icons-wind.css";
-// import "./weather_icons/css/weather-icons.css";
 import { WiWindDeg} from "weather-icons-react";
 import "./wind.css";
 
-const WeatherChart = ({type, data}) => {
+const WeatherChart = ({type, data, period}) => {
 	const color = "white";
 	const svgHeight = 100;
 	const svgWidth = 500;
@@ -53,8 +52,8 @@ const WeatherChart = ({type, data}) => {
 				{data.map((coord) => (
 					<>
 					{console.log(coord.y)}
-						 <rect fill="#e4ecef" fillOpacity="0.8" transform={`translate(0 -6) rotate(180 ${getSVGX(coord.x)} ${getSVGY(20)})`} style={{transition: "0.5s all"}}
-						  x = {getSVGX(coord.x)} y = {getSVGY(34)} 
+						 <rect fill="#e4ecef" fillOpacity="0.8" transform={`translate(0 0) rotate(180 ${getSVGX(coord.x)} ${getSVGY(20)})`} style={{transition: "0.5s all"}}
+						  x = {getSVGX(coord.x)} y = {getSVGY(38)} 
 						  width={getSVGX(getMaxX())/data.length} height={100-getSVGY(coord.y)}/>
 					</>
 				))}
@@ -80,7 +79,7 @@ const WeatherChart = ({type, data}) => {
 			<g className="xLabel">
 				{data.map((coord) => (		
 					<text style={{fontSize: "7px",fill: "#e4ecef"}}
-					 x={getSVGX(coord.x+0.01)} y={getSVGY(0)}> {coord.dth} </text>
+					 x={getSVGX(coord.x+0.01)} y={getSVGY(0)}> {period === "Hourly" ? coord.dth+":00" : coord.dth} </text>
 				))}
 			</g>
 		);
@@ -92,10 +91,10 @@ const WeatherChart = ({type, data}) => {
 					<>
 						<text style={{fontSize: "7px",fill: "#e4ecef"}}
  						 x={getSVGX(coord.x)} y={getSVGY(coord.y-0.5)}> 
-							{(Math.round(coord.y*10)/10)+"°C"} 
+							{Math.round(coord.y)} 
 						</text> 		
 						<circle style={{fontSize: "7px",fill: "#e4ecef"}}
-						 cx={getSVGX(coord.x+0.05)} cy={getSVGY(coord.y-1)} r="2"/>
+						 cx={getSVGX(coord.x+0.03)} cy={getSVGY(coord.y-1)} r="2"/>
 					</>
 				))}
 			</g>
