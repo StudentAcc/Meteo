@@ -1,6 +1,6 @@
 A weather forecast web application utilising a React framework to provide live weather information anywhere in the world with a detailed forecast section and an interactive weather map with multiple different weather layers available.
 
-Amir Saeidi contribution:<br>
+Amir Saeidi contributions:<br>
 My primary responsibility was to design the highly informative interactive weather map with different weather layers using an available weather API and publicly available mapping data.
 
 **This project was tested and run on Linux on 29/03/2021**
