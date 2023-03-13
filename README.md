@@ -1,4 +1,6 @@
-**This project was tested and run on Linux**
+A weather forecast web application utilising a React framework to provide live weather information anywhere in the world with a detailed forecast section and an interactive weather map with multiple different weather layers available.
+
+**This project was tested and run on Linux on 29/03/2021**
 
 ## Install dependencies
 
